@@ -1,0 +1,3538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>StarDriftOS — Dxkshh</title>
+
+<!-- ============================================================
+  QUICK EDIT GUIDE — search for these tags to personalize fast:
+  [EDIT: NAME]      -> your name / handle
+  [EDIT: TAGLINE]    -> one line about you
+  [EDIT: BIO]         -> short paragraph
+  [EDIT: LINKS]       -> your social / project links
+  [EDIT: TICKER]      -> scrolling facts about you
+  [EDIT: IMAGE]        -> swap satellite.png for your own image
+============================================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --void: #050914;
+    --void-2: #0b1226;
+    --panel: #0e1730;
+    --aurora: #3dffa2;
+    --signal: #29d3c8;
+    --amber: #ffc93c;
+    --nebula: #a78bfa;
+    --ink: #e8ecf4;
+    --ink-dim: #8590ad;
+    --border: rgba(232,236,244,0.09);
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0; padding:0;
+    background: var(--void);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ---------- background layers ---------- */
+  .stars{
+    position: fixed; inset:0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 40% 70%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 10% 85%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 55% 45%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 92% 80%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 30% 55%, rgba(255,255,255,0.5), transparent);
+    background-repeat: repeat;
+    background-size: 600px 600px;
+    z-index: 0;
+    animation: drift 120s linear infinite;
+  }
+  @keyframes drift{
+    from{ background-position: 0 0; }
+    to{ background-position: -600px 300px; }
+  }
+
+  .grid-overlay{
+    position: fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(61,255,162,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,255,162,0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+    z-index: 1;
+    pointer-events: none;
+    mask-image: radial-gradient(circle at 70% 45%, black 0%, transparent 65%);
+  }
+
+  /* ---------- top status bar ---------- */
+  .topbar{
+    position: fixed; top:0; left:0; right:0; z-index: 20;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+    background: rgba(5,9,20,0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .pill{
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(232,236,244,0.06);
+    border: 1px solid var(--border);
+  }
+  .topbar .brand{
+    color: var(--aurora);
+    font-weight: 600;
+  }
+  .status-dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background: var(--aurora);
+    box-shadow: 0 0 8px var(--aurora);
+    margin-right:8px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:0.35; }
+  }
+  .topbar-right{ display:flex; gap:10px; }
+  .topbar-right span.pill{ opacity:0.9; }
+  #clock{ color: var(--signal); }
+
+  /* push page content below the now-fixed top bar */
+  .hero{ padding-top: 70px; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position: relative; z-index: 2;
+    min-height: calc(100vh - 180px);
+    display:flex; align-items:center;
+    padding: 0 32px;
+    gap: 40px;
+  }
+
+  .hero-left{
+    flex: 1 1 520px;
+    max-width: 640px;
+    padding: 40px 0;
+  }
+
+  .boot-line{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--signal);
+    min-height: 20px;
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
+  }
+  .boot-line .cursor{
+    display:inline-block;
+    width: 8px; height: 14px;
+    background: var(--signal);
+    margin-left: 3px;
+    animation: blink 1s step-end infinite;
+    vertical-align: -2px;
+  }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  .eyebrow{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 16px 0;
+    opacity: 0;
+  }
+
+  /* ---------- avatar next to name ---------- */
+  .avatar-row{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .avatar{
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--aurora);
+    box-shadow: 0 0 14px rgba(61,255,162,0.35);
+    flex-shrink: 0;
+  }
+  .avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  h1{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.02;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.02em;
+    opacity: 0;
+  }
+  h1 .accent{
+    background: linear-gradient(90deg, var(--aurora), var(--signal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    filter: drop-shadow(0 0 18px rgba(61,255,162,0.45));
+    letter-spacing: -0.01em;
+  }
+
+  .bio{
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-dim);
+    max-width: 480px;
+    margin: 0 0 32px 0;
+    opacity: 0;
+  }
+
+  .links{
+    display:flex; flex-wrap: wrap;
+    gap: 12px;
+    opacity: 0;
+  }
+  .links a{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 11px 18px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--panel);
+    display:inline-flex; align-items:center; gap:8px;
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  }
+  .links a:hover{
+    border-color: var(--aurora);
+    background: rgba(61,255,162,0.06);
+    transform: translateY(-2px);
+  }
+  .links a.primary{
+    background: var(--aurora);
+    color: #04170e;
+    border-color: var(--aurora);
+    font-weight: 600;
+  }
+  .links a.primary:hover{
+    background: #5bffb3;
+  }
+  .links a .dot{ color: var(--amber); }
+
+  .fade-up{ animation: fadeUp 0.7s ease forwards; }
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* ---------- image / satellite panel ---------- */
+  .hero-right{
+    flex: 1 1 480px;
+    position: relative;
+    display:flex; align-items:center; justify-content:center;
+    min-height: 480px;
+  }
+  .sat-frame{
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 0 1px rgba(61,255,162,0.05), 0 30px 80px -20px rgba(61,255,162,0.15);
+  }
+  .sat-frame img{
+    width: 100%;
+    display:block;
+    filter: saturate(1.08) contrast(1.03);
+  }
+  .sat-frame::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, transparent 60%, rgba(5,9,20,0.5) 100%);
+    pointer-events:none;
+  }
+  .sat-tag{
+    position:absolute; top:14px; left:14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    color: var(--aurora);
+    background: rgba(5,9,20,0.65);
+    border: 1px solid rgba(61,255,162,0.3);
+    padding: 5px 10px;
+    border-radius: 5px;
+    backdrop-filter: blur(4px);
+    z-index: 2;
+  }
+  .sat-tag.right{
+    left: auto; right: 14px;
+    color: var(--amber);
+    border-color: rgba(255,201,60,0.3);
+  }
+
+  .scan-ring{
+    position:absolute;
+    width: 640px; height: 640px;
+    border-radius: 50%;
+    border: 1px dashed rgba(61,255,162,0.15);
+    animation: spin 40s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  /* ---------- mini drifting satellite ---------- */
+  .mini-sat{
+    position: fixed;
+    top: 22%;
+    left: -60px;
+    width: 46px;
+    height: 46px;
+    z-index: 3;
+    opacity: 0.85;
+    animation: driftAcross 26s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(61,255,162,0.35));
+    pointer-events: none;
+  }
+  .mini-sat svg{ width: 100%; height: 100%; }
+  @keyframes driftAcross{
+    0%{ transform: translate(0, 0) rotate(-8deg); opacity: 0; }
+    8%{ opacity: 0.85; }
+    50%{ transform: translate(60vw, -40px) rotate(6deg); }
+    92%{ opacity: 0.85; }
+    100%{ transform: translate(120vw, 20px) rotate(-8deg); opacity: 0; }
+  }
+  @media (max-width: 880px){
+    .mini-sat{ display: none; }
+  }
+
+  /* ---------- ticker ---------- */
+  .ticker-wrap{
+    position: relative; z-index: 5;
+    border-top: 1px solid var(--border);
+    background: var(--void-2);
+    overflow: hidden;
+    padding: 14px 0;
+  }
+  .ticker{
+    display: inline-flex;
+    white-space: nowrap;
+    animation: scroll 28s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-dim);
+  }
+  .ticker span{
+    padding: 0 28px;
+    border-right: 1px solid var(--border);
+  }
+  .ticker span b{ color: var(--signal); font-weight: 500; }
+  @keyframes scroll{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
+  }
+
+  @media (max-width: 880px){
+    .hero{ flex-direction: column; padding-top: 30px; }
+    .hero-right{ order: -1; min-height: 260px; }
+    .scan-ring{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
+  /* ---------- floating window ---------- */
+  .window{
+    position: fixed;
+    bottom: 92px;
+    right: 32px;
+    width: 260px;
+    z-index: 15;
+    background: rgba(14,23,48,0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 20px 50px -15px rgba(0,0,0,0.6);
+    font-family: 'JetBrains Mono', monospace;
+    overflow: hidden;
+    opacity: 0;
+    animation: windowIn 0.6s ease forwards;
+    animation-delay: 1.6s;
+  }
+  @keyframes windowIn{
+    from{ opacity:0; transform: translateY(16px) scale(0.97); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+  .window-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+  }
+  .window-dots{ display:flex; gap:6px; }
+  .window-dots span{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .window-dots span:nth-child(1){ background:#ff5f57; }
+  .window-dots span:nth-child(2){ background:#febc2e; }
+  .window-dots span:nth-child(3){ background:#28c840; }
+  .window-body{
+    padding: 14px 14px 16px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .window-body .line{ display:flex; justify-content:space-between; gap:10px; }
+  .window-body .line .k{ color: var(--ink-dim); }
+  .window-body .line .v{ color: var(--aurora); }
+
+  @media (max-width: 880px){
+    .window{ left: 16px; right: 16px; width: auto; bottom: 78px; }
+  }
+
+  /* ---------- loading screen ---------- */
+  .loading-screen{
+    position: fixed; inset: 0;
+    z-index: 200;
+    background: var(--void);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .loading-screen.active{ display: flex; }
+  .loading-icon{
+    width: 56px; height: 56px;
+    animation: loadSpin 2.4s linear infinite;
+    filter: drop-shadow(0 0 12px rgba(61,255,162,0.5));
+  }
+  @keyframes loadSpin{ to{ transform: rotate(360deg); } }
+  .loading-text{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--signal);
+    min-height: 18px;
+  }
+  .loading-bar-track{
+    width: 260px; height: 5px;
+    border-radius: 3px;
+    background: rgba(232,236,244,0.08);
+    overflow: hidden;
+  }
+  .loading-bar-fill{
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--aurora), var(--signal));
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(61,255,162,0.6);
+  }
+  .loading-pct{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-dim);
+  }
+
+  /* ---------- desktop mode ---------- */
+  .desktop-screen{
+    position: fixed; inset: 0;
+    z-index: 90;
+    background: transparent;
+    display: none;
+  }
+  .desktop-screen.active{ display: block; }
+
+  /* ---------- floating gen-z orbital clock ---------- */
+  /* ---------- glossy in-OS wallpapers ---------- */
+  body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    opacity:1;
+    transition:background .35s ease, opacity .35s ease;
+  }
+
+  body.os-solid-void .desktop-screen, body.os-solid-graphite .desktop-screen, body.os-solid-midnight .desktop-screen, body.os-solid-forest .desktop-screen, body.os-solid-plum .desktop-screen, body.os-gloss-black .desktop-screen, body.os-gloss-cyan .desktop-screen, body.os-gloss-purple .desktop-screen, body.os-gloss-red .desktop-screen, body.os-gloss-ocean .desktop-screen{
+    background-image:none !important;
+  }
+
+  body.os-solid-void .desktop-screen{
+    background:#070b16 !important;
+  }
+  body.os-solid-graphite .desktop-screen{
+    background:#151820 !important;
+  }
+  body.os-solid-midnight .desktop-screen{
+    background:#081326 !important;
+  }
+  body.os-solid-forest .desktop-screen{
+    background:#071714 !important;
+  }
+  body.os-solid-plum .desktop-screen{
+    background:#160d1d !important;
+  }
+
+  body.os-gloss-black .desktop-screen{
+    background:
+      radial-gradient(ellipse at 25% 15%,rgba(255,255,255,.10),transparent 22%),
+      linear-gradient(145deg,#161922 0%,#05060a 48%,#10141e 100%) !important;
+  }
+  body.os-gloss-cyan .desktop-screen{
+    background:
+      radial-gradient(circle at 75% 20%,rgba(41,211,200,.28),transparent 25%),
+      radial-gradient(circle at 15% 85%,rgba(61,255,162,.12),transparent 30%),
+      linear-gradient(145deg,#071b23,#07101a 55%,#050914) !important;
+  }
+  body.os-gloss-purple .desktop-screen{
+    background:
+      radial-gradient(circle at 78% 18%,rgba(167,139,250,.30),transparent 27%),
+      radial-gradient(circle at 18% 80%,rgba(101,80,180,.18),transparent 30%),
+      linear-gradient(145deg,#17112b,#080914 62%,#120c1d) !important;
+  }
+  body.os-gloss-red .desktop-screen{
+    background:
+      radial-gradient(circle at 82% 25%,rgba(255,92,110,.25),transparent 24%),
+      radial-gradient(circle at 15% 82%,rgba(255,180,80,.10),transparent 28%),
+      linear-gradient(145deg,#211016,#09090e 60%,#180c12) !important;
+  }
+  body.os-gloss-ocean .desktop-screen{
+    background:
+      radial-gradient(circle at 70% 12%,rgba(40,155,255,.28),transparent 25%),
+      radial-gradient(circle at 15% 78%,rgba(48,224,201,.14),transparent 32%),
+      linear-gradient(145deg,#071c32,#07111f 55%,#06111a) !important;
+  }
+
+  .wallpaper-category{
+    margin:17px 0 8px;
+    font:9px 'JetBrains Mono',monospace;
+    letter-spacing:.14em;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+  }
+  .wallpaper-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+  }
+  .wallpaper-option{
+    min-height:76px !important;
+  }
+  .wallpaper-preview.solid-void{background:#070b16;}
+  .wallpaper-preview.solid-graphite{background:#151820;}
+  .wallpaper-preview.solid-midnight{background:#081326;}
+  .wallpaper-preview.solid-forest{background:#071714;}
+  .wallpaper-preview.solid-plum{background:#160d1d;}
+  .wallpaper-preview.gloss-black{
+    background:linear-gradient(145deg,#454956,#07080b 55%,#222633);
+  }
+  .wallpaper-preview.gloss-cyan{
+    background:radial-gradient(circle at 70% 20%,#29d3c8,transparent 28%),linear-gradient(145deg,#0b2c35,#06101a);
+  }
+  .wallpaper-preview.gloss-purple{
+    background:radial-gradient(circle at 70% 20%,#a78bfa,transparent 28%),linear-gradient(145deg,#261946,#080914);
+  }
+  .wallpaper-preview.gloss-red{
+    background:radial-gradient(circle at 70% 20%,#ff5c6e,transparent 28%),linear-gradient(145deg,#35141d,#09090e);
+  }
+  .wallpaper-preview.gloss-ocean{
+    background:radial-gradient(circle at 70% 20%,#2b9fff,transparent 28%),linear-gradient(145deg,#0a3150,#06111a);
+  }
+  .settings-window .wallpaper-options{
+    grid-template-columns:repeat(3,1fr);
+  }
+  @media(max-width:620px){
+    .settings-window .wallpaper-options{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ---------- enhanced post-login space field ---------- */
+  body.desktop-active .wallpaper-layer{
+    opacity:1;
+    z-index:2;
+  }
+  body.desktop-active .desktop-screen{
+    background:
+      radial-gradient(ellipse at 50% 35%,rgba(41,211,200,.055),transparent 45%),
+      radial-gradient(ellipse at 15% 15%,rgba(167,139,250,.055),transparent 30%),
+      radial-gradient(ellipse at 85% 80%,rgba(61,255,162,.035),transparent 30%),
+      var(--void);
+  }
+
+  /* Keep selected Settings wallpaper visible after login.
+     These rules intentionally come after the desktop-active rule. */
+  body.desktop-active.os-solid-void .desktop-screen{background:#070b16 !important;}
+  body.desktop-active.os-solid-graphite .desktop-screen{background:#151820 !important;}
+  body.desktop-active.os-solid-midnight .desktop-screen{background:#081326 !important;}
+  body.desktop-active.os-solid-forest .desktop-screen{background:#071714 !important;}
+  body.desktop-active.os-solid-plum .desktop-screen{background:#160d1d !important;}
+  body.desktop-active.os-gloss-black .desktop-screen{background:linear-gradient(145deg,#454956,#07080b 55%,#222633) !important;}
+  body.desktop-active.os-gloss-cyan .desktop-screen{background:radial-gradient(circle at 70% 20%,#29d3c8,transparent 28%),linear-gradient(145deg,#0b2c35,#06101a) !important;}
+  body.desktop-active.os-gloss-purple .desktop-screen{background:radial-gradient(circle at 70% 20%,#a78bfa,transparent 28%),linear-gradient(145deg,#261946,#080914) !important;}
+  body.desktop-active.os-gloss-red .desktop-screen{background:radial-gradient(circle at 70% 20%,#ff5c6e,transparent 28%),linear-gradient(145deg,#35141d,#09090e) !important;}
+  body.desktop-active.os-gloss-ocean .desktop-screen{background:radial-gradient(circle at 70% 20%,#2b9fff,transparent 28%),linear-gradient(145deg,#0a3150,#06111a) !important;}
+  body.desktop-active .wallpaper-star{
+    box-shadow:0 0 10px rgba(255,255,255,.34);
+  }
+  body.desktop-active .wall-satellite{
+    opacity:.88;
+    filter:drop-shadow(0 0 12px rgba(41,211,200,.20));
+  }
+  body.desktop-active .wall-asteroid{
+    opacity:.76;
+    filter:drop-shadow(0 0 8px rgba(167,139,250,.15));
+  }
+  .space-dust{
+    position:absolute;
+    width:1px;
+    height:1px;
+    border-radius:50%;
+    background:rgba(255,255,255,.55);
+    box-shadow:0 0 5px rgba(255,255,255,.2);
+    animation:dustDrift var(--dust-duration,80s) linear infinite;
+    animation-delay:var(--dust-delay,0s);
+  }
+  @keyframes dustDrift{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(-18vw,12vh,0);}
+  }
+  .planet-orb{
+    position:absolute;
+    border-radius:50%;
+    opacity:.26;
+    box-shadow:inset -18px -10px 30px rgba(0,0,0,.45),0 0 40px rgba(41,211,200,.08);
+    animation:planetFloat var(--planet-duration,70s) ease-in-out infinite alternate;
+  }
+  @keyframes planetFloat{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(2vw,-2vh,0);}
+  }
+  body.desktop-active .planet-orb{display:block;}
+  body:not(.desktop-active) .planet-orb{display:none;}
+
+  /* ---------- live orbital wallpapers ---------- */
+  .wallpaper-layer{
+    position:fixed;
+    inset:0;
+    z-index:2;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .wallpaper-star{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.72);
+    box-shadow:0 0 8px rgba(255,255,255,.22);
+    animation:starTwinkle var(--twinkle,3.5s) ease-in-out infinite alternate;
+  }
+  @keyframes starTwinkle{
+    from{opacity:.25; transform:scale(.75);}
+    to{opacity:.9; transform:scale(1.15);}
+  }
+  .wall-satellite,.wall-asteroid{
+    position:absolute;
+    opacity:.72;
+    filter:drop-shadow(0 0 9px rgba(41,211,200,.12));
+    will-change:transform;
+  }
+  .wall-satellite svg,.wall-asteroid svg{
+    width:100%;height:100%;display:block;
+  }
+  .wall-satellite{
+    width:var(--size,40px);
+    height:var(--size,40px);
+    animation:orbitDrift var(--duration,55s) linear infinite;
+    animation-delay:var(--delay,0s);
+  }
+  .wall-asteroid{
+    width:var(--size,24px);
+    height:var(--size,24px);
+    animation:asteroidDrift var(--duration,43s) linear infinite;
+    animation-delay:var(--delay,0s);
+  }
+  @keyframes orbitDrift{
+    0%{transform:translate3d(-12vw, var(--y1),0) rotate(0deg);}
+    50%{transform:translate3d(52vw,var(--y2),0) rotate(180deg);}
+    100%{transform:translate3d(112vw,var(--y3),0) rotate(360deg);}
+  }
+  @keyframes asteroidDrift{
+    0%{transform:translate3d(112vw,var(--y1),0) rotate(0deg);}
+    50%{transform:translate3d(48vw,var(--y2),0) rotate(210deg);}
+    100%{transform:translate3d(-14vw,var(--y3),0) rotate(430deg);}
+  }
+
+  /* Alternate wallpaper palettes */
+  body.wallpaper-nebula .wallpaper-layer{
+    background:
+      radial-gradient(circle at 20% 25%,rgba(167,139,250,.10),transparent 25%),
+      radial-gradient(circle at 78% 65%,rgba(41,211,200,.08),transparent 30%);
+  }
+  body.wallpaper-solar .wallpaper-layer{
+    background:
+      radial-gradient(circle at 75% 18%,rgba(255,201,60,.09),transparent 22%),
+      radial-gradient(circle at 25% 80%,rgba(61,255,162,.06),transparent 28%);
+  }
+  body.wallpaper-deep .wallpaper-layer{
+    background:
+      radial-gradient(circle at 50% 45%,rgba(255,255,255,.035),transparent 35%),
+      radial-gradient(circle at 90% 10%,rgba(41,211,200,.05),transparent 25%);
+  }
+
+  /* ---------- settings app ---------- */
+  .settings-window{
+    position:fixed;
+    width:min(430px,calc(100vw - 28px));
+    height:min(640px,88vh);
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:115;
+    display:none;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:rgba(9,16,35,.92);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 25px 80px rgba(0,0,0,.5);
+    overflow:hidden;
+  }
+  .settings-window.active{
+    display:block;
+    opacity:1;
+  }
+  .settings-window.minimized{display:none !important;}
+  .settings-window.maximized{
+    top:0 !important; left:0 !important;
+    width:100vw !important; height:100vh !important;
+    transform:none !important; border-radius:0 !important;
+  }
+  .settings-titlebar{
+    height:43px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 14px;
+    border-bottom:1px solid var(--border);
+    font:10px 'JetBrains Mono',monospace;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:.1em;
+  }
+  .settings-close{
+    border:0;
+    background:none;
+    color:var(--ink-dim);
+    cursor:pointer;
+    font-size:18px;
+  }
+  .settings-body{padding:18px;}
+  .settings-heading{
+    margin:0 0 5px;
+    font:700 19px 'Space Grotesk',sans-serif;
+  }
+  .settings-sub{
+    margin:0 0 16px;
+    color:var(--ink-dim);
+    font-size:11px;
+  }
+  .wallpaper-options{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+  }
+  .wallpaper-option{
+    min-height:90px;
+    padding:10px;
+    border:1px solid rgba(232,236,244,.08);
+    border-radius:12px;
+    background:rgba(255,255,255,.025);
+    color:var(--ink);
+    cursor:pointer;
+    text-align:left;
+    transition:.16s ease;
+  }
+  .wallpaper-option:hover,.wallpaper-option.selected{
+    border-color:rgba(61,255,162,.48);
+    background:rgba(61,255,162,.055);
+    transform:translateY(-1px);
+  }
+  .wallpaper-preview{
+    height:47px;
+    border-radius:8px;
+    margin-bottom:8px;
+    overflow:hidden;
+    position:relative;
+  }
+  .wallpaper-preview::before,.wallpaper-preview::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+  }
+  .preview-deep{
+    background:radial-gradient(circle at 30% 30%,#1c2949,#050914 68%);
+  }
+  .preview-nebula{
+    background:radial-gradient(circle at 30% 35%,rgba(167,139,250,.75),transparent 25%),#07091b;
+  }
+  .preview-solar{
+    background:radial-gradient(circle at 70% 25%,rgba(255,201,60,.8),transparent 22%),#090d18;
+  }
+  .preview-deep::after,.preview-nebula::after,.preview-solar::after{
+    width:5px;height:5px;right:22%;top:28%;background:white;
+    box-shadow:-30px 17px 0 rgba(255,255,255,.7),18px 25px 0 rgba(255,255,255,.45);
+  }
+  .wallpaper-option strong{
+    display:block;
+    font:600 10px 'JetBrains Mono',monospace;
+    letter-spacing:.08em;
+  }
+  .wallpaper-option span{
+    display:block;
+    margin-top:3px;
+    font-size:9px;
+    color:var(--ink-dim);
+  }
+
+  @media (max-width:620px){
+    .wallpaper-options{grid-template-columns:1fr;}
+    .wallpaper-option{min-height:72px;}
+    .wallpaper-preview{height:34px;}
+  }
+
+  /* ---------- mini calendar + system status ---------- */
+  .mini-calendar{
+    margin-top:13px;
+    padding-top:12px;
+    border-top:1px solid rgba(232,236,244,0.07);
+  }
+  .calendar-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;
+    letter-spacing:.12em;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+  }
+  .calendar-month{
+    color:var(--signal);
+  }
+  .calendar-week{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:3px;
+    margin-bottom:4px;
+  }
+  .calendar-week span{
+    text-align:center;
+    font:8px 'JetBrains Mono',monospace;
+    color:#65718d;
+  }
+  .calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:3px;
+  }
+  .calendar-day{
+    min-height:19px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:5px;
+    font:8px 'JetBrains Mono',monospace;
+    color:#9ba7c0;
+  }
+  .calendar-day.today{
+    color:var(--void);
+    background:var(--aurora);
+    box-shadow:0 0 12px rgba(61,255,162,.25);
+    font-weight:700;
+  }
+  .calendar-day.empty{opacity:0;}
+
+  .desktop-app-status{
+    position:fixed;
+    top:22px;
+    right:28px;
+    z-index:97;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 11px;
+    border:1px solid rgba(232,236,244,.09);
+    border-radius:12px;
+    background:rgba(7,13,29,.68);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 10px 35px rgba(0,0,0,.22);
+    font:9px 'JetBrains Mono',monospace;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .active-app-name{
+    min-width:72px;
+    color:var(--ink);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .active-app-name::before{
+    content:"APP // ";
+    color:var(--ink-dim);
+  }
+  .system-icons{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding-left:10px;
+    border-left:1px solid rgba(232,236,244,.08);
+  }
+  .sys-icon{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    color:#9da8bf;
+  }
+  .sys-icon svg{width:15px;height:15px;display:block;}
+  .wifi-bars{
+    display:inline-flex;
+    align-items:flex-end;
+    gap:1.5px;
+    height:12px;
+  }
+  .wifi-bars i{
+    display:block;
+    width:2px;
+    border-radius:2px;
+    background:var(--aurora);
+  }
+  .wifi-bars i:nth-child(1){height:3px;}
+  .wifi-bars i:nth-child(2){height:6px;}
+  .wifi-bars i:nth-child(3){height:9px;}
+  .wifi-bars i:nth-child(4){height:12px;opacity:.25;}
+  .volume-level{
+    font-size:8px;
+    color:var(--signal);
+  }
+
+  @media (max-width:900px){
+    .desktop-app-status{right:16px;top:14px;}
+    .orbital-clock{top:68px;right:16px;}
+  }
+  @media (max-width:620px){
+    .desktop-app-status{right:10px;gap:8px;padding:7px 8px;}
+    .system-icons{gap:6px;padding-left:7px;}
+    .active-app-name{min-width:52px;max-width:90px;}
+    .orbital-clock{right:10px;width:195px;}
+  }
+
+  .orbital-clock{
+    position: fixed;
+    top: 92px;
+    right: 28px;
+    z-index: 94;
+    width: 235px;
+    padding: 18px 18px 16px;
+    border: 1px solid rgba(61,255,162,0.18);
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 88% 10%, rgba(61,255,162,0.10), transparent 38%),
+      rgba(7,13,29,0.72);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+      0 18px 55px rgba(0,0,0,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.045),
+      0 0 35px rgba(41,211,200,0.045);
+    overflow: hidden;
+    user-select: none;
+  }
+  .orbital-clock::before{
+    content:"";
+    position:absolute;
+    width:110px;
+    height:110px;
+    right:-58px;
+    top:-62px;
+    border:1px solid rgba(61,255,162,0.14);
+    border-radius:50%;
+    box-shadow: 0 0 35px rgba(61,255,162,0.08);
+  }
+  .clock-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+  .clock-live{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:var(--aurora);
+  }
+  .clock-live-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--aurora);
+    box-shadow:0 0 10px rgba(61,255,162,.8);
+    animation: clockPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes clockPulse{
+    0%,100%{opacity:.45; transform:scale(.8);}
+    50%{opacity:1; transform:scale(1.15);}
+  }
+  .clock-time{
+    font-family:'JetBrains Mono', monospace;
+    font-size:35px;
+    line-height:1;
+    letter-spacing:-.055em;
+    color:var(--ink);
+    text-shadow:0 0 22px rgba(61,255,162,.12);
+  }
+  .clock-seconds{
+    color:var(--aurora);
+    font-size:.52em;
+    vertical-align:top;
+    margin-left:3px;
+    letter-spacing:-.02em;
+  }
+  .clock-date{
+    margin-top:9px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px;
+    color:#aeb8cf;
+    letter-spacing:.04em;
+  }
+  .clock-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:15px;
+    padding-top:11px;
+    border-top:1px solid rgba(232,236,244,0.07);
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px;
+    color:var(--ink-dim);
+  }
+  .clock-footer strong{
+    color:var(--signal);
+    font-weight:500;
+  }
+  .clock-vibe{
+    color:var(--amber);
+    white-space:nowrap;
+  }
+
+  .desktop-topbar{
+    position: fixed; top: 16px; left: 0; right: 0; z-index: 92;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+  }
+  .desktop-topbar .pill{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    background: rgba(14,23,48,0.8);
+    backdrop-filter: blur(10px);
+    cursor: default;
+  }
+  #backToOrbit{
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color 0.2s ease, color 0.2s ease;
+    border: 1px solid var(--border);
+  }
+  #backToOrbit:hover{ border-color: var(--aurora); color: var(--aurora); }
+
+  .desktop-hint{
+    color: var(--amber) !important;
+  }
+
+  .desktop-sat{
+    position: fixed;
+    top: 0; left: 0;
+    width: 52px; height: 52px;
+    z-index: 91;
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px rgba(61,255,162,0.5));
+    transition: opacity 0.35s ease;
+    will-change: transform;
+  }
+  .desktop-sat svg{ width: 100%; height: 100%; display: block; }
+  .desktop-sat.hidden{ opacity: 0; pointer-events: none; }
+
+  .boom-text{
+    position: fixed;
+    z-index: 93;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--amber);
+    pointer-events: none;
+    animation: boomFloat 0.9s ease-out forwards;
+  }
+  @keyframes boomFloat{
+    0%{ opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
+    30%{ opacity: 1; transform: translate(-50%, -70%) scale(1.15); }
+    100%{ opacity: 0; transform: translate(-50%, -110%) scale(1); }
+  }
+
+  .particle{
+    position: fixed;
+    z-index: 92;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleBurst 0.7s ease-out forwards;
+  }
+  @keyframes particleBurst{
+    0%{ transform: translate(0,0) scale(1); opacity: 1; }
+    100%{ transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .desktop-sat{ transition: none; }
+  }
+
+  /* ---------- clean desktop mode: dial back visual noise ---------- */
+  body.desktop-active .grid-overlay{ display: none; }
+  body.desktop-active .stars{ display: none; }
+  .desktop-screen{
+    background: radial-gradient(ellipse at 50% 25%, #0d1730 0%, var(--void) 65%);
+  }
+  .desktop-screen::before{
+    content:"";
+    position: absolute; inset:0;
+    background: radial-gradient(circle at 50% 40%, rgba(41,211,200,0.07), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ---------- ambient background satellites + asteroids ---------- */
+  .ambient-obj{
+    position: fixed;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .ambient-obj svg{ width: 100%; height: 100%; display: block; }
+
+  @keyframes ambientDrift1{
+    from{ transform: translate(-10vw, 12vh) rotate(-10deg); }
+    to{ transform: translate(112vw, -6vh) rotate(35deg); }
+  }
+  @keyframes ambientDrift2{
+    from{ transform: translate(108vw, 18vh) rotate(20deg); }
+    to{ transform: translate(-14vw, 64vh) rotate(-40deg); }
+  }
+  @keyframes ambientDrift3{
+    from{ transform: translate(15vw, -10vh) rotate(0deg); }
+    to{ transform: translate(72vw, 108vh) rotate(70deg); }
+  }
+  @keyframes ambientDrift4{
+    from{ transform: translate(90vw, 100vh) rotate(0deg); }
+    to{ transform: translate(4vw, 4vh) rotate(-25deg); }
+  }
+
+  .amb-sat-a{ width: 34px; height: 34px; top: 0; left: 0; animation: ambientDrift1 52s linear infinite; }
+  .amb-sat-b{ width: 26px; height: 26px; top: 0; left: 0; animation: ambientDrift2 68s linear infinite; animation-delay: -20s; }
+  .amb-ast-a{ width: 22px; height: 22px; top: 0; left: 0; animation: ambientDrift3 46s linear infinite; animation-delay: -8s; }
+  .amb-ast-b{ width: 30px; height: 30px; top: 0; left: 0; animation: ambientDrift4 60s linear infinite; animation-delay: -30s; }
+  .amb-ast-c{ width: 16px; height: 16px; top: 0; left: 0; animation: ambientDrift3 38s linear infinite; animation-delay: -22s; }
+
+  /* ---------- taskbar ---------- */
+  .desktop-taskbar{
+    position: fixed; bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 96;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border-radius: 16px;
+    background: rgba(14,23,48,0.75);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .taskbar-app{
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    background: none; border: none; cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-dim);
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  }
+  .taskbar-app:hover{
+    background: rgba(255,255,255,0.06);
+    color: var(--ink);
+    transform: translateY(-2px);
+  }
+  .taskbar-app svg{ width: 22px; height: 22px; }
+  .taskbar-app.active-app{ color: var(--aurora); }
+  .taskbar-app.active-app::after{
+    content:"";
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--aurora);
+    box-shadow: 0 0 6px var(--aurora);
+  }
+
+  /* ---------- OS window manager ---------- */
+  .browser-window,
+  .calculator-window,
+  .camera-window,
+  .gallery-window,
+  .terminal-window,
+  .notes-window,
+  .game-window{
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 97;
+    background: var(--void-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 90px -20px rgba(0,0,0,0.7);
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.18s ease, width 0.18s ease, height 0.18s ease, border-radius 0.18s ease;
+    min-width: 220px;
+    min-height: 150px;
+  }
+  .browser-window{
+    width: min(760px, 92vw);
+    height: min(540px, 78vh);
+  }
+  .calculator-window{ width: 296px; height: 420px; }
+  .camera-window{ width: min(440px, 92vw); height: 400px; }
+  .gallery-window{ width: min(680px, 92vw); height: min(520px, 80vh); }
+  .terminal-window{ width: min(560px, 94vw); height: min(390px, 72vh); }
+  .notes-window{ width: min(430px, 92vw); height: min(480px, 78vh); }
+  .game-window{ width: 344px; }
+
+  .browser-window.active,
+  .calculator-window.active,
+  .camera-window.active,
+  .gallery-window.active,
+  .terminal-window.active,
+  .notes-window.active,
+  .game-window.active{
+    display: flex;
+    opacity: 1;
+  }
+
+  .os-window.minimized{
+    display: none !important;
+  }
+  .os-window.maximized{
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+  .os-window.maximized .browser-body{
+    min-height: 0;
+  }
+
+  .browser-titlebar{
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  /* draggable window chrome */
+  .browser-titlebar, .window-bar, .settings-titlebar{
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+  .browser-titlebar:active, .window-bar:active, .settings-titlebar:active{ cursor: grabbing; }
+
+  .window-controls{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-shrink:0;
+  }
+  .window-controls button,
+  .browser-dots span{
+    width:11px;
+    height:11px;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    display:inline-block;
+    cursor:pointer;
+  }
+  .window-controls button:hover,
+  .browser-dots span:hover{ filter:brightness(1.25); transform:scale(1.08); }
+  .window-controls .close,
+  .browser-dots span:nth-child(1){ background:#ff5f57; }
+  .window-controls .minimize,
+  .browser-dots span:nth-child(2){ background:#febc2e; }
+  .window-controls .maximize,
+  .browser-dots span:nth-child(3){ background:#28c840; }
+
+  .window-title{
+    min-width:0;
+    flex:1;
+    text-align:center;
+    font:10px 'JetBrains Mono',monospace;
+    color:var(--ink-dim);
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+
+  .dragging-window{
+    transition: none !important;
+    transform: none !important;
+  }
+  .os-window.focused-window{
+    box-shadow:0 30px 90px -20px rgba(0,0,0,.75), 0 0 0 1px rgba(61,255,162,.08);
+  }
+  .browser-dots{ display:flex; gap:6px; }
+  .browser-dots span{ width:11px; height:11px; border-radius:50%; display:inline-block; cursor: pointer; }
+  .browser-dots span:nth-child(1){ background:#ff5f57; }
+  .browser-dots span:nth-child(2){ background:#febc2e; }
+  .browser-dots span:nth-child(3){ background:#28c840; }
+  .browser-addressbar{
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .browser-addressbar .lock{ color: var(--aurora); font-size: 11px; }
+  .browser-body{ flex: 1; position: relative; background: #fff; }
+  .browser-body iframe{
+    width: 100%; height: 100%;
+    border: none; display: block;
+  }
+  .browser-fallback{
+    position: absolute; inset: 0;
+    display: none;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+    background: var(--void-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-dim);
+    text-align: center;
+    padding: 20px;
+  }
+  .browser-fallback a{ color: var(--signal); }
+
+  /* ---------- calculator ---------- */
+  .calc-display{
+    padding: 18px 16px 10px;
+    text-align: right;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--ink);
+    background: rgba(0,0,0,0.2);
+    min-height: 64px;
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .calc-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 12px;
+    flex: 1;
+  }
+  .calc-btn{
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .calc-btn:hover{ background: rgba(255,255,255,0.1); }
+  .calc-btn:active{ transform: scale(0.94); }
+  .calc-btn.op{ color: var(--amber); }
+  .calc-btn.clear{ color: #d40808; }
+  .calc-btn.equals{
+    grid-column: span 4;
+    background: var(--aurora);
+    color: #04170e;
+    font-weight: 700;
+    border-color: var(--aurora);
+  }
+  .calc-btn.equals:hover{ background: #5bffb3; }
+
+  /* ---------- camera ---------- */
+  .camera-body{
+    position: relative;
+    flex: 1;
+    background: #000;
+    overflow: hidden;
+  }
+  #cameraVideo, #cameraSnapshot{
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #cameraSnapshot{ display: none; }
+  .camera-controls{
+    display: flex; justify-content: center; gap: 10px;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .camera-btn{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.05);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .camera-btn:hover{ background: rgba(255,255,255,0.1); }
+  .camera-btn.primary{
+    background: var(--aurora);
+    color: #04170e;
+    border-color: var(--aurora);
+    font-weight: 600;
+  }
+  .camera-btn.primary:hover{ background: #5bffb3; }
+  .camera-fallback{
+    position: absolute; inset: 0;
+    display: none;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    background: var(--void-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    text-align: center;
+    padding: 20px;
+  }
+
+  
+  .gallery-body{ flex:1; position:relative; overflow:hidden; background:var(--void); }
+  .gallery-grid{
+    height:100%;
+    overflow-y:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:10px;
+    padding:12px;
+    align-content:start;
+  }
+  .gallery-thumb{
+    position:relative;
+    aspect-ratio:1;
+    padding:0;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    cursor:pointer;
+    background:#000;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .gallery-thumb:hover{ border-color:rgba(61,255,162,.5); transform:translateY(-2px); }
+  .gallery-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .gallery-thumb span{
+    position:absolute; left:8px; bottom:8px; right:8px;
+    font:9px 'JetBrains Mono',monospace;
+    letter-spacing:.08em;
+    color:var(--ink);
+    background:rgba(5,9,20,.72);
+    border-radius:6px;
+    padding:4px 7px;
+    backdrop-filter:blur(4px);
+    text-align:left;
+  }
+  .gallery-view{
+    position:absolute; inset:0;
+    display:none;
+    flex-direction:column;
+    background:var(--void);
+  }
+  .gallery-view.active{ display:flex; }
+  .gallery-view-img{ flex:1; min-height:0; display:flex; align-items:center; justify-content:center; padding:12px; }
+  .gallery-view-img img{
+    max-width:100%; max-height:100%;
+    border-radius:10px;
+    border:1px solid var(--border);
+    box-shadow:0 20px 60px -20px rgba(0,0,0,.8);
+  }
+  .gallery-view-meta{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:10px 14px;
+    border-top:1px solid var(--border);
+    background:rgba(255,255,255,.02);
+  }
+  .gallery-view-meta strong{
+    font:600 12px 'Space Grotesk',sans-serif;
+    letter-spacing:.03em;
+  }
+  .gallery-view-meta p{
+    margin:3px 0 0;
+    font-size:10.5px;
+    color:var(--ink-dim);
+  }
+  .gallery-back-btn{
+    font:11px 'JetBrains Mono',monospace;
+    padding:7px 14px;
+    border-radius:16px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.05);
+    color:var(--ink);
+    cursor:pointer;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .gallery-back-btn:hover{ background:rgba(255,255,255,.1); }
+
+  
+  .terminal-body{
+    flex:1; min-height:0;
+    display:flex; flex-direction:column;
+    background:#04070f;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; line-height:1.75;
+    cursor:text;
+  }
+  .term-output{
+    flex:1; min-height:0;
+    overflow-y:auto;
+    padding:12px 14px 4px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    color:var(--signal);
+  }
+  .term-output .cmd{ color:var(--aurora); }
+  .term-output .dim{ color:var(--ink-dim); }
+  .term-output .err{ color:#ff6b6b; }
+  .term-output .amber{ color:var(--amber); }
+  .term-input-line{ display:flex; align-items:center; gap:8px; padding:4px 14px 12px; }
+  .term-prompt{ color:var(--aurora); white-space:nowrap; }
+  .term-input{
+    flex:1; min-width:0;
+    background:none; border:none; outline:none;
+    font:inherit; color:var(--ink);
+    caret-color:var(--aurora);
+  }
+
+  
+  .notes-body{ flex:1; min-height:0; display:flex; flex-direction:column; }
+  .notes-area{
+    flex:1; min-height:0; resize:none;
+    border:none; outline:none;
+    padding:14px;
+    background:transparent;
+    color:var(--ink);
+    font:13px/1.75 'Inter',sans-serif;
+  }
+  .notes-status{
+    display:flex; justify-content:space-between; gap:10px;
+    padding:8px 14px;
+    border-top:1px solid var(--border);
+    font:9px 'JetBrains Mono',monospace;
+    letter-spacing:.08em;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+  }
+  .notes-status .saved{ color:var(--aurora); }
+
+  
+  .game-body{
+    flex:1;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:10px;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(41,211,200,.06), transparent 60%),
+      var(--void);
+    padding:12px;
+  }
+  .game-header{
+    display:flex; align-items:center; justify-content:space-between;
+    width:100%; max-width:304px;
+    font:10px 'JetBrains Mono',monospace;
+    letter-spacing:.08em;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+  }
+  .game-header b{ color:var(--aurora); font-weight:600; }
+  .snake-canvas{
+    width:300px; height:300px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#04070f;
+    touch-action:none;
+  }
+  .game-start-btn{
+    font:700 11px 'JetBrains Mono',monospace;
+    letter-spacing:.08em;
+    padding:8px 24px;
+    border-radius:18px;
+    border:1px solid var(--aurora);
+    background:var(--aurora);
+    color:#04170e;
+    cursor:pointer;
+    text-transform:uppercase;
+  }
+  .game-start-btn:hover{ background:#5bffb3; }
+  .game-hint{
+    font:9px 'JetBrains Mono',monospace;
+    color:var(--ink-dim);
+    letter-spacing:.08em;
+    text-align:center;
+  }
+
+  @media (max-width:380px){
+    .game-window{ width:calc(100vw - 20px); }
+    .snake-canvas{ width:100%; height:auto; }
+    .game-header{ max-width:100%; }
+  }
+
+  @media (max-width: 900px){
+    .orbital-clock{
+      top:76px;
+      right:16px;
+      width:205px;
+      padding:15px;
+    }
+    .clock-time{font-size:30px;}
+  }
+
+  @media (max-width: 620px){
+    .desktop-taskbar{ bottom: 12px; padding: 8px 10px; gap: 6px; }
+    .taskbar-app span.label{ display: none; }
+  }
+
+  
+  body:not(.desktop-active) .desktop-taskbar,
+  body:not(.desktop-active) .desktop-app-status,
+  body:not(.desktop-active) .orbital-clock,
+  body:not(.desktop-active) .wallpaper-layer,
+  body:not(.desktop-active) .settings-window,
+  body:not(.desktop-active) .window,
+  body:not(.desktop-active) .browser-window,
+  body:not(.desktop-active) .calculator-window,
+  body:not(.desktop-active) .camera-window,
+  body:not(.desktop-active) .gallery-window,
+  body:not(.desktop-active) .terminal-window,
+  body:not(.desktop-active) .notes-window,
+  body:not(.desktop-active) .game-window{
+    display:none !important;
+  }
+
+
+  body:not(.desktop-active) .taskbar-app{
+    visibility:hidden !important;
+    pointer-events:none !important;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+<div class="grid-overlay"></div>
+
+
+<div class="mini-sat">
+  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="26" width="14" height="7" rx="1" transform="rotate(-40 6 26)" fill="#3dffa2" opacity="0.85"/>
+    <rect x="44" y="26" width="14" height="7" rx="1" transform="rotate(40 44 26)" fill="#3dffa2" opacity="0.85"/>
+    <rect x="24" y="24" width="16" height="16" rx="3" fill="#e8ecf4"/>
+    <rect x="27" y="27" width="10" height="10" rx="1.5" fill="#0b1226"/>
+    <circle cx="32" cy="32" r="1.6" fill="#29d3c8"/>
+    <line x1="20" y1="18" x2="26" y2="24" stroke="#8590ad" stroke-width="1.4"/>
+    <circle cx="19" cy="16" r="2" fill="#ffc93c"/>
+  </svg>
+</div>
+
+<div class="topbar">
+  <div class="pill"><span class="status-dot"></span><span class="brand">SYSTEM ONLINE</span></div>
+  <div class="topbar-right">
+    <span class="pill">ORBIT: STARDRIFTOS</span>
+    <span class="pill" id="clock">--:--:--</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="boot-line" id="bootLine"><span id="bootText"></span><span class="cursor"></span></div>
+
+    <p class="eyebrow" id="el1">
+      <span class="avatar-row">
+        
+        <span class="avatar"><img src="./satellite.png" alt="Dxkshh" /></span>
+        TRANSMISSION FROM ORBIT
+      </span>
+    </p>
+    
+    <h1 id="el2">hey, i'm <span class="accent">Dxkshh</span> —<br>welcome to my orbit</h1>
+
+    <!-- [EDIT: BIO] -->
+    <p class="bio" id="el3">
+      this is my little corner of the internet, built line by line.
+      currently orbiting between code, playlists, and whatever
+      hyperfixation i'm on this week. scroll around, poke things,
+      see what you find.
+    </p>
+
+    <!-- [EDIT: LINKS] — swap hrefs + labels for your own -->
+    <div class="links" id="el4">
+      <a class="primary" href="#" id="enterOsBtn"><span class="dot">●</span> enter my os</a>
+      <a href="https://github.com/" target="_blank">github <span class="dot">↗</span></a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="scan-ring"></div>
+    <div class="sat-frame">
+      <!-- [EDIT: IMAGE] -->
+      <span class="sat-tag">SAT-01 // LIVE FEED</span>
+      <span class="sat-tag right">SIGNAL: STRONG</span>
+      <img src="./satellite.png" alt="satellite in orbit" />
+    </div>
+  </div>
+</div>
+
+<!-- floating "window" — a mini app panel, per Part 2's window concept -->
+<div class="window">
+  <div class="window-bar">
+    <span class="window-dots"><span></span><span></span><span></span></span>
+    <span>status.exe</span>
+  </div>
+  <div class="window-body">
+    <div class="line"><span class="k">pilot</span><span class="v">Dxkshh</span></div>
+    <div class="line"><span class="k">craft</span><span class="v">StarDriftOS</span></div>
+    <div class="line"><span class="k">uptime</span><span class="v" id="uptimeVal">00:00:00</span></div>
+    <div class="line"><span class="k">signal</span><span class="v">strong</span></div>
+  </div>
+</div>
+
+<div class="ticker-wrap">
+  <!-- [EDIT: TICKER] — add/remove facts, they repeat automatically -->
+  <div class="ticker" id="tickerContent"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ---- boot sequence typing effect ----
+  const bootMsg = "INITIALIZING STARDRIFTOS v1.0 ... LOADING DXKSHH.EXE ... DONE";
+  const bootEl = document.getElementById('bootText');
+  let i = 0;
+  function typeBoot(){
+    if(i <= bootMsg.length){
+      bootEl.textContent = bootMsg.slice(0, i);
+      i++;
+      setTimeout(typeBoot, 22);
+    } else {
+      // reveal the rest of the hero once boot finishes
+      ['el1','el2','el3','el4'].forEach((id, idx) => {
+        const node = document.getElementById(id);
+        node.style.animationDelay = (idx * 0.12) + 's';
+        node.classList.add('fade-up');
+      });
+    }
+  }
+  typeBoot();
+
+  // ---- live clock, mission-control style ----
+  function updateClock(){
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').textContent = `${hh}:${mm}:${ss} LOCAL`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ---- live wallpaper engine ----
+  const wallpaperLayer = document.getElementById('wallpaperLayer');
+  const settingsAppBtn = document.getElementById('settingsAppBtn');
+  const settingsWindow = document.getElementById('settingsWindow');
+  const settingsClose = document.getElementById('settingsClose');
+
+  const satelliteSVGs = [
+    `<svg viewBox="0 0 64 64" fill="none"><path d="M25 31h14v10H25z" stroke="currentColor" stroke-width="1.4"/><path d="M25 34H7v8h18M39 34h18v8H39" stroke="currentColor" stroke-width="1.3"/><path d="M32 31V21M29 21h6" stroke="currentColor" stroke-width="1.3"/><circle cx="32" cy="36" r="3" stroke="currentColor"/><path d="M17 42l-5 8M47 42l5 8" stroke="currentColor" stroke-width="1.3"/></svg>`,
+    `<svg viewBox="0 0 64 64" fill="none"><rect x="22" y="24" width="20" height="19" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M22 28H7v13h15M42 28h15v13H42M32 24V15M28 15h8" stroke="currentColor" stroke-width="1.3"/><circle cx="32" cy="33" r="4" stroke="currentColor"/></svg>`,
+    `<svg viewBox="0 0 64 64" fill="none"><path d="M27 26h10l5 8-5 10H27l-5-10 5-8Z" stroke="currentColor" stroke-width="1.4"/><path d="M22 31H8v10h14M42 31h14v10H42" stroke="currentColor" stroke-width="1.3"/><path d="M32 26V17M29 17h6" stroke="currentColor" stroke-width="1.3"/></svg>`
+  ];
+
+  const asteroidSVGs = [
+    `<svg viewBox="0 0 32 32" fill="none"><path d="M7 8l9-4 10 5 2 11-8 8-12-3-5-9 4-8Z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="1.1"/><circle cx="13" cy="12" r="2" fill="currentColor" fill-opacity=".35"/><circle cx="22" cy="21" r="1.5" fill="currentColor" fill-opacity=".35"/></svg>`,
+    `<svg viewBox="0 0 32 32" fill="none"><path d="M5 12l7-8 11 3 4 9-5 10-11 1-7-7 1-8Z" fill="currentColor" fill-opacity=".2" stroke="currentColor" stroke-width="1.1"/><circle cx="11" cy="14" r="1.5" fill="currentColor"/><circle cx="21" cy="10" r="1.2" fill="currentColor"/></svg>`
+  ];
+
+  function makeWallpaperObjects(){
+    if (!wallpaperLayer) return;
+    wallpaperLayer.innerHTML = '';
+
+    // Dense starfield: intentionally much richer after login.
+    for(let i=0;i<150;i++){
+      const star = document.createElement('i');
+      star.className = 'wallpaper-star';
+      const size = (Math.random()*2.1+0.7).toFixed(1);
+      star.style.width = size+'px';
+      star.style.height = size+'px';
+      star.style.left = Math.random()*100+'%';
+      star.style.top = Math.random()*100+'%';
+      star.style.setProperty('--twinkle',(2.4+Math.random()*4.5).toFixed(1)+'s');
+      star.style.animationDelay = (-Math.random()*5)+'s';
+      wallpaperLayer.appendChild(star);
+    }
+
+    // Different satellites
+    for(let i=0;i<11;i++){
+      const sat = document.createElement('div');
+      sat.className = 'wall-satellite';
+      sat.innerHTML = satelliteSVGs[i % satelliteSVGs.length];
+      sat.style.setProperty('--size',(24+Math.random()*28).toFixed(0)+'px');
+      sat.style.setProperty('--duration',(45+Math.random()*45).toFixed(0)+'s');
+      sat.style.setProperty('--delay',(-Math.random()*55).toFixed(0)+'s');
+      sat.style.setProperty('--y1',Math.round(Math.random()*92)+'vh');
+      sat.style.setProperty('--y2',Math.round(Math.random()*92)+'vh');
+      sat.style.setProperty('--y3',Math.round(Math.random()*92)+'vh');
+      sat.style.color = i % 3 === 0 ? 'rgba(61,255,162,.62)' : 'rgba(41,211,200,.55)';
+      wallpaperLayer.appendChild(sat);
+    }
+
+    // Different asteroids
+    for(let i=0;i<20;i++){
+      const asteroid = document.createElement('div');
+      asteroid.className = 'wall-asteroid';
+      asteroid.innerHTML = asteroidSVGs[i % asteroidSVGs.length];
+      asteroid.style.setProperty('--size',(10+Math.random()*22).toFixed(0)+'px');
+      asteroid.style.setProperty('--duration',(32+Math.random()*48).toFixed(0)+'s');
+      asteroid.style.setProperty('--delay',(-Math.random()*60).toFixed(0)+'s');
+      asteroid.style.setProperty('--y1',Math.round(Math.random()*95)+'vh');
+      asteroid.style.setProperty('--y2',Math.round(Math.random()*95)+'vh');
+      asteroid.style.setProperty('--y3',Math.round(Math.random()*95)+'vh');
+      asteroid.style.color = 'rgba(167,139,250,.45)';
+      wallpaperLayer.appendChild(asteroid);
+    }
+
+    // Tiny drifting dust particles for the post-login space depth.
+    for(let i=0;i<55;i++){
+      const dust = document.createElement('i');
+      dust.className = 'space-dust';
+      dust.style.left = Math.random()*100+'%';
+      dust.style.top = Math.random()*100+'%';
+      dust.style.setProperty('--dust-duration',(55+Math.random()*75).toFixed(0)+'s');
+      dust.style.setProperty('--dust-delay',(-Math.random()*90).toFixed(0)+'s');
+      wallpaperLayer.appendChild(dust);
+    }
+  }
+
+  function setWallpaper(name){
+    const wallpaperClasses = [
+      'wallpaper-deep','wallpaper-nebula','wallpaper-solar',
+      'os-solid-void','os-solid-graphite','os-solid-midnight',
+      'os-solid-forest','os-solid-plum',
+      'os-gloss-black','os-gloss-cyan','os-gloss-purple',
+      'os-gloss-red','os-gloss-ocean'
+    ];
+    document.body.classList.remove(...wallpaperClasses);
+    const wallpaperClass =
+      name && (name.startsWith('solid-') || name.startsWith('gloss-'))
+        ? 'os-' + name
+        : 'wallpaper-' + (name || 'deep');
+    document.body.classList.add(wallpaperClass);
+    document.querySelectorAll('.wallpaper-option').forEach(btn => {
+      btn.classList.toggle('selected', btn.dataset.wallpaper === name);
+    });
+    try { localStorage.setItem('stardrift-wallpaper',name); } catch(e){}
+  }
+
+  makeWallpaperObjects();
+  let savedWallpaper = 'solid-void';
+  try { savedWallpaper = localStorage.getItem('stardrift-wallpaper') || 'solid-void'; } catch(e){}
+  // Only apply a wallpaper that actually exists in the Settings UI.
+  const validWallpapers = new Set(
+    [...document.querySelectorAll('.wallpaper-option')].map(btn => btn.dataset.wallpaper)
+  );
+  if (!validWallpapers.has(savedWallpaper)) savedWallpaper = 'solid-void';
+  setWallpaper(savedWallpaper);
+
+  if (settingsAppBtn && settingsWindow) {
+    settingsAppBtn.addEventListener('click', () => {
+      const wasOpen = settingsWindow.classList.contains('active') && !settingsWindow.classList.contains('minimized');
+      if (wasOpen) {
+        minimizeWindow(settingsWindow);
+      } else {
+        settingsWindow.classList.add('active');
+        settingsWindow.classList.remove('minimized');
+        focusWindow(settingsWindow);
+        settingsAppBtn.classList.add('active-app');
+      }
+    });
+  }
+  if (settingsClose) {
+    settingsClose.addEventListener('click', () => {
+      settingsWindow.classList.remove('active','minimized','maximized','focused-window');
+      settingsAppBtn.classList.remove('active-app');
+    });
+  }
+  document.querySelectorAll('.wallpaper-option').forEach(btn => {
+    btn.addEventListener('click', () => setWallpaper(btn.dataset.wallpaper));
+  });
+
+  // ---- desktop app indicator ----
+  const activeAppName = document.getElementById('activeAppName');
+
+  function setActiveApp(name){
+    if (activeAppName) activeAppName.textContent = name || 'DESKTOP';
+  }
+
+  // Keep the indicator synchronized with the existing app windows.
+  const appWatchList = [
+    ['browserWindow','browserAppBtn','browser'],
+    ['calculatorWindow','calculatorAppBtn','calculator'],
+    ['cameraWindow','cameraAppBtn','camera'],
+    ['galleryWindow','galleryAppBtn','hubble'],
+    ['notesWindow','notesAppBtn','notes'],
+    ['terminalWindow','terminalAppBtn','terminal'],
+    ['gameWindow','gameAppBtn','snake']
+  ];
+
+  function syncActiveApp(){
+    const open = appWatchList.find(([winId]) => {
+      const el = document.getElementById(winId);
+      return el && el.classList.contains('active');
+    });
+    setActiveApp(open ? open[2] : 'DESKTOP');
+  }
+
+  // Observe class changes so drag/open/close behavior does not need to be rewritten.
+  appWatchList.forEach(([winId]) => {
+    const el = document.getElementById(winId);
+    if (el) new MutationObserver(syncActiveApp).observe(el, {attributes:true, attributeFilter:['class']});
+  });
+  syncActiveApp();
+
+  // ---- mini calendar ----
+  function renderMiniCalendar(date = new Date()){
+    const grid = document.getElementById('calendarGrid');
+    const monthLabel = document.getElementById('calendarMonth');
+    if (!grid || !monthLabel) return;
+
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    monthLabel.textContent = date.toLocaleDateString(undefined, {
+      month:'short',
+      year:'numeric'
+    }).toUpperCase();
+
+    let out = '';
+    for(let i=0;i<firstDay;i++) out += '<span class="calendar-day empty">0</span>';
+    for(let day=1;day<=daysInMonth;day++){
+      const isToday = day === date.getDate();
+      out += `<span class="calendar-day${isToday ? ' today' : ''}">${day}</span>`;
+    }
+    grid.innerHTML = out;
+  }
+
+  renderMiniCalendar();
+  setInterval(() => renderMiniCalendar(new Date()), 60000);
+
+  // ---- floating orbital clock ----
+  function updateOrbitalClock(){
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+
+    const hm = document.getElementById('orbitalClockHM');
+    const sec = document.getElementById('orbitalClockSS');
+    const date = document.getElementById('orbitalClockDate');
+    const vibe = document.getElementById('clockVibe');
+
+    if (hm) hm.textContent = `${hh}:${mm}`;
+    if (sec) sec.textContent = `:${ss}`;
+    if (date) {
+      date.textContent = now.toLocaleDateString(undefined, {
+        weekday:'short',
+        day:'2-digit',
+        month:'short',
+        year:'numeric'
+      }).toUpperCase();
+    }
+
+    if (vibe) {
+      const vibes = ['vibing ✦','locked in ◉','no thoughts ◌','still online ⌁','orbiting ☄'];
+      vibe.textContent = vibes[now.getMinutes() % vibes.length];
+    }
+  }
+  updateOrbitalClock();
+  setInterval(updateOrbitalClock, 1000);
+
+  // ---- window uptime counter (how long you've been viewing the page) ----
+  let seconds = 0;
+  function updateUptime(){
+    seconds++;
+    const h = String(Math.floor(seconds / 3600)).padStart(2,'0');
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2,'0');
+    const s = String(seconds % 60).padStart(2,'0');
+    document.getElementById('uptimeVal').textContent = `${h}:${m}:${s}`;
+  }
+  setInterval(updateUptime, 1000);
+
+  // ---- telemetry ticker content ----
+  // [EDIT: TICKER] edit these facts, they'll loop forever
+  const facts = [
+    "CURRENTLY LISTENING TO: your favorite artist",
+    "STATUS: probably overthinking a color palette",
+    "FAVORITE STACK: html · css · js · vibes",
+    "LOCATION: somewhere between two time zones",
+    "NEXT MISSION: shipping episode 2",
+    "FUN FACT: this whole page is one html file"
+  ];
+  const tickerEl = document.getElementById('tickerContent');
+  const doubled = [...facts, ...facts]; // duplicate for seamless loop
+  tickerEl.innerHTML = doubled.map(f => `<span><b>›</b> ${f}</span>`).join('');
+
+  // ================= ENTER MY OS: loading screen + desktop mode =================
+  const enterOsBtn = document.getElementById('enterOsBtn');
+  const loadingScreen = document.getElementById('loadingScreen');
+  const loadingText = document.getElementById('loadingText');
+  const loadingBarFill = document.getElementById('loadingBarFill');
+  const loadingPct = document.getElementById('loadingPct');
+  const desktopScreen = document.getElementById('desktopScreen');
+  const desktopSat = document.getElementById('desktopSat');
+  const backToOrbit = document.getElementById('backToOrbit');
+  const browserWindow = document.getElementById('browserWindow');
+  const browserAppBtn = document.getElementById('browserAppBtn');
+  const browserClose = document.getElementById('browserClose');
+  const wikiFrame = document.getElementById('wikiFrame');
+  const browserFallback = document.getElementById('browserFallback');
+  const calculatorWindow = document.getElementById('calculatorWindow');
+  const calculatorAppBtn = document.getElementById('calculatorAppBtn');
+  const calcClose = document.getElementById('calcClose');
+  const calcDisplay = document.getElementById('calcDisplay');
+  const calcGrid = document.getElementById('calcGrid');
+  const cameraWindow = document.getElementById('cameraWindow');
+  const cameraAppBtn = document.getElementById('cameraAppBtn');
+  const cameraClose = document.getElementById('cameraClose');
+  const cameraVideo = document.getElementById('cameraVideo');
+  const cameraSnapshot = document.getElementById('cameraSnapshot');
+  const cameraCanvas = document.getElementById('cameraCanvas');
+  const cameraFallback = document.getElementById('cameraFallback');
+  const captureBtn = document.getElementById('captureBtn');
+  const retakeBtn = document.getElementById('retakeBtn');
+  // gallery app
+  const galleryWindow = document.getElementById('galleryWindow');
+  const galleryAppBtn = document.getElementById('galleryAppBtn');
+  const galleryClose = document.getElementById('galleryClose');
+  const galleryGrid = document.getElementById('galleryGrid');
+  const galleryView = document.getElementById('galleryView');
+  const galleryViewImg = document.getElementById('galleryViewImg');
+  const galleryViewTitle = document.getElementById('galleryViewTitle');
+  const galleryViewDesc = document.getElementById('galleryViewDesc');
+  const galleryBackBtn = document.getElementById('galleryBackBtn');
+  // notes app
+  const notesWindow = document.getElementById('notesWindow');
+  const notesAppBtn = document.getElementById('notesAppBtn');
+  const notesClose = document.getElementById('notesClose');
+  const notesArea = document.getElementById('notesArea');
+  const notesSaved = document.getElementById('notesSaved');
+  const notesWords = document.getElementById('notesWords');
+  // terminal app
+  const terminalWindow = document.getElementById('terminalWindow');
+  const terminalAppBtn = document.getElementById('terminalAppBtn');
+  const terminalClose = document.getElementById('terminalClose');
+  const terminalBody = document.getElementById('terminalBody');
+  const termOutput = document.getElementById('termOutput');
+  const termInput = document.getElementById('termInput');
+  // snake game
+  const gameWindow = document.getElementById('gameWindow');
+  const gameAppBtn = document.getElementById('gameAppBtn');
+  const gameClose = document.getElementById('gameClose');
+  const snakeCanvas = document.getElementById('snakeCanvas');
+  const snakeScoreEl = document.getElementById('snakeScore');
+  const snakeBestEl = document.getElementById('snakeBest');
+  const snakeStartBtn = document.getElementById('snakeStartBtn');
+
+  const bootStages = [
+    { at: 0,  msg: "BOOTING DESKTOP ENVIRONMENT..." },
+    { at: 30, msg: "CALIBRATING SATELLITE UPLINK..." },
+    { at: 65, msg: "SYNCING ORBIT POSITION..." },
+    { at: 90, msg: "READY." }
+  ];
+
+  enterOsBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    loadingScreen.classList.add('active');
+    let progress = 0;
+    loadingBarFill.style.width = '0%';
+    loadingPct.textContent = '0%';
+
+    const loadInterval = setInterval(() => {
+      progress += 2; // fixed step: 50 ticks x 100ms = 5000ms total
+      if (progress >= 100) progress = 100;
+
+      loadingBarFill.style.width = progress + '%';
+      loadingPct.textContent = Math.floor(progress) + '%';
+
+      const stage = [...bootStages].reverse().find(s => progress >= s.at);
+      if (stage) loadingText.textContent = stage.msg;
+
+      if (progress >= 100) {
+        clearInterval(loadInterval);
+        setTimeout(() => {
+          loadingScreen.classList.remove('active');
+          desktopScreen.classList.add('active');
+          document.body.classList.add('desktop-active');
+          initDesktopSatellite();
+        }, 350);
+      }
+    }, 100);
+  });
+
+  backToOrbit.addEventListener('click', () => {
+    desktopScreen.classList.remove('active');
+    document.body.classList.remove('desktop-active');
+    closeAllApps();
+  });
+
+  // ---- satellite follows the cursor with smooth trailing lag ----
+  let followInit = false;
+  function initDesktopSatellite(){
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let satX = mouseX;
+    let satY = mouseY;
+    let alive = true;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // touch support: satellite drifts toward last touch point
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches[0]) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      }
+    });
+
+    function animate(){
+      if (desktopScreen.classList.contains('active') && alive) {
+        satX += (mouseX - satX) * 0.09;
+        satY += (mouseY - satY) * 0.09;
+        desktopSat.style.transform =
+          `translate(${satX - 26}px, ${satY - 26}px) rotate(${(mouseX - satX) * 0.4}deg)`;
+      }
+      requestAnimationFrame(animate);
+    }
+    if (!followInit) { animate(); followInit = true; }
+
+    // ---- click the satellite: it gets blasted ----
+    desktopSat.onclick = () => {
+      if (!alive) return;
+      alive = false;
+
+      const rect = desktopSat.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      spawnExplosion(cx, cy);
+      desktopSat.classList.add('hidden');
+
+      setTimeout(() => {
+        // respawn at a fresh spot
+        satX = Math.random() * window.innerWidth;
+        satY = Math.random() * window.innerHeight;
+        desktopSat.classList.remove('hidden');
+        alive = true;
+      }, 1400);
+    };
+  }
+
+  // ---- browser app: opens/closes the wikipedia window ----
+  browserAppBtn.addEventListener('click', () => {
+    if (browserWindow.classList.contains('minimized')) {
+      restoreWindow(browserWindow);
+      browserWindow.classList.add('active');
+      browserAppBtn.classList.add('active-app');
+      return;
+    }
+    if (browserWindow.classList.contains('active')) {
+      minimizeWindow(browserWindow);
+      browserAppBtn.classList.remove('active-app');
+      return;
+    }
+    browserWindow.classList.add('active');
+    restoreWindow(browserWindow);
+    browserAppBtn.classList.add('active-app');
+  });
+
+  browserClose.addEventListener('click', () => {
+    browserWindow.classList.remove('active', 'minimized');
+    browserAppBtn.classList.remove('active-app');
+  });
+
+  // if wikipedia's iframe fails to load (blocked, offline, etc), show a fallback link
+  let iframeLoaded = false;
+  wikiFrame.addEventListener('load', () => { iframeLoaded = true; });
+  setTimeout(() => {
+    if (!iframeLoaded) {
+      browserFallback.style.display = 'flex';
+    }
+  }, 4000);
+
+  // ---- closes every app window + taskbar highlight (used when leaving desktop) ----
+  function closeAllApps(){
+    browserWindow.classList.remove('active');
+    browserAppBtn.classList.remove('active-app');
+    calculatorWindow.classList.remove('active', 'minimized');
+    calculatorAppBtn.classList.remove('active-app');
+    galleryWindow.classList.remove('active', 'minimized');
+    galleryAppBtn.classList.remove('active-app');
+    notesWindow.classList.remove('active', 'minimized');
+    notesAppBtn.classList.remove('active-app');
+    terminalWindow.classList.remove('active', 'minimized');
+    terminalAppBtn.classList.remove('active-app');
+    gameWindow.classList.remove('active', 'minimized');
+    gameAppBtn.classList.remove('active-app');
+    closeCameraWindow();
+    pauseSnake();
+  }
+
+  // ================= OS WINDOW MANAGER =================
+  // All desktop apps are real floating windows: drag, focus, minimize,
+  // maximize/restore and close. Positions are clamped to the viewport.
+  let topWindowZ = 100;
+
+  function focusWindow(win){
+    if (!win) return;
+    topWindowZ += 1;
+    win.style.zIndex = topWindowZ;
+    document.querySelectorAll('.os-window').forEach(w => w.classList.remove('focused-window'));
+    win.classList.add('focused-window');
+  }
+
+  function clearWindowPosition(win){
+    if (!win) return;
+    win.style.left = '';
+    win.style.top = '';
+    win.style.right = '';
+    win.style.bottom = '';
+    win.style.transform = '';
+  }
+
+  function restoreWindow(win){
+    if (!win) return;
+    const saved = win._windowRestore;
+    win.classList.remove('maximized');
+    win.classList.remove('minimized');
+    if (saved){
+      win.style.left = saved.left;
+      win.style.top = saved.top;
+      win.style.width = saved.width;
+      win.style.height = saved.height;
+      win.style.right = saved.right;
+      win.style.bottom = saved.bottom;
+      win.style.transform = saved.transform;
+    } else {
+      clearWindowPosition(win);
+    }
+    focusWindow(win);
+  }
+
+  function minimizeWindow(win){
+    if (!win) return;
+    win.classList.remove('maximized');
+    win.classList.add('minimized');
+  }
+
+  function maximizeWindow(win){
+    if (!win) return;
+    if (win.classList.contains('maximized')){
+      restoreWindow(win);
+      return;
+    }
+
+    const rect = win.getBoundingClientRect();
+    win._windowRestore = {
+      left: win.style.left || rect.left + 'px',
+      top: win.style.top || rect.top + 'px',
+      width: win.style.width || rect.width + 'px',
+      height: win.style.height || rect.height + 'px',
+      right: win.style.right || 'auto',
+      bottom: win.style.bottom || 'auto',
+      transform: win.style.transform || 'none'
+    };
+
+    // Convert a centered window to viewport coordinates before maximizing.
+    win.style.left = rect.left + 'px';
+    win.style.top = rect.top + 'px';
+    win.style.right = 'auto';
+    win.style.bottom = 'auto';
+    win.style.transform = 'none';
+    win.classList.remove('minimized');
+    win.classList.add('maximized');
+    focusWindow(win);
+  }
+
+  function closeWindow(win, button){
+    if (!win) return;
+    win.classList.remove('active','minimized','maximized','focused-window');
+    if (button) button.classList.remove('active-app');
+  }
+
+  function makeWindowFloatable(win, handle, appButton){
+    if (!win || !handle) return;
+
+    win.classList.add('os-window');
+    win.addEventListener('pointerdown', () => focusWindow(win));
+    handle.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.window-controls, .browser-dots, button, a, input, select')) return;
+      if (e.button !== undefined && e.button !== 0) return;
+      if (win.classList.contains('maximized')) return;
+
+      focusWindow(win);
+      const rect = win.getBoundingClientRect();
+
+      // Freeze the current visual position so dragging never jumps.
+      win.style.left = rect.left + 'px';
+      win.style.top = rect.top + 'px';
+      win.style.right = 'auto';
+      win.style.bottom = 'auto';
+      win.style.transform = 'none';
+
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      let pointerId = e.pointerId;
+      let dragging = true;
+      win.classList.add('dragging-window');
+
+      handle.setPointerCapture?.(pointerId);
+      e.preventDefault();
+
+      const move = (ev) => {
+        if (!dragging || ev.pointerId !== pointerId) return;
+        const maxX = Math.max(0, window.innerWidth - win.offsetWidth);
+        const maxY = Math.max(0, window.innerHeight - win.offsetHeight);
+        const x = Math.min(maxX, Math.max(0, ev.clientX - offsetX));
+        const y = Math.min(maxY, Math.max(0, ev.clientY - offsetY));
+        win.style.left = x + 'px';
+        win.style.top = y + 'px';
+      };
+
+      const stop = (ev) => {
+        if (!dragging) return;
+        if (ev.pointerId !== undefined && ev.pointerId !== pointerId) return;
+        dragging = false;
+        win.classList.remove('dragging-window');
+        handle.removeEventListener('pointermove', move);
+        handle.removeEventListener('pointerup', stop);
+        handle.removeEventListener('pointercancel', stop);
+        try { handle.releasePointerCapture?.(pointerId); } catch (_) {}
+      };
+
+      handle.addEventListener('pointermove', move);
+      handle.addEventListener('pointerup', stop);
+      handle.addEventListener('pointercancel', stop);
+    });
+
+    handle.querySelectorAll('[data-window-action]').forEach(control => {
+      control.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const action = control.dataset.windowAction;
+        if (action === 'minimize') minimizeWindow(win);
+        if (action === 'maximize') maximizeWindow(win);
+      });
+    });
+
+    // Clicking the title bar focuses the window without dragging.
+    handle.addEventListener('click', () => focusWindow(win));
+  }
+
+  makeWindowFloatable(browserWindow, document.querySelector('#browserWindow .browser-titlebar'), browserAppBtn);
+  makeWindowFloatable(calculatorWindow, document.querySelector('#calculatorWindow .browser-titlebar'), calculatorAppBtn);
+  makeWindowFloatable(cameraWindow, document.querySelector('#cameraWindow .browser-titlebar'), cameraAppBtn);
+  makeWindowFloatable(galleryWindow, document.querySelector('#galleryWindow .browser-titlebar'), galleryAppBtn);
+  makeWindowFloatable(notesWindow, document.querySelector('#notesWindow .browser-titlebar'), notesAppBtn);
+  makeWindowFloatable(terminalWindow, document.querySelector('#terminalWindow .browser-titlebar'), terminalAppBtn);
+  makeWindowFloatable(gameWindow, document.querySelector('#gameWindow .browser-titlebar'), gameAppBtn);
+  makeWindowFloatable(settingsWindow, document.querySelector('#settingsWindow .settings-titlebar'), settingsAppBtn);
+  makeWindowFloatable(document.querySelector('.window'), document.querySelector('.window .window-bar'));
+
+  // ================= CALCULATOR APP =================
+  calculatorAppBtn.addEventListener('click', () => {
+    if (calculatorWindow.classList.contains('minimized')) {
+      restoreWindow(calculatorWindow);
+      calculatorWindow.classList.add('active');
+      calculatorAppBtn.classList.add('active-app');
+      return;
+    }
+    const isOpen = calculatorWindow.classList.contains('active');
+    if (isOpen) {
+      minimizeWindow(calculatorWindow);
+      calculatorAppBtn.classList.remove('active-app');
+    } else {
+      calculatorWindow.classList.add('active');
+      restoreWindow(calculatorWindow);
+      calculatorAppBtn.classList.add('active-app');
+    }
+  });
+  calcClose.addEventListener('click', () => {
+    calculatorWindow.classList.remove('active');
+    calculatorAppBtn.classList.remove('active-app');
+  });
+
+  let calcExpr = '';
+  function calcRender(){
+    calcDisplay.textContent = calcExpr.length ? calcExpr : '0';
+  }
+  calcGrid.addEventListener('click', (e) => {
+    const btn = e.target.closest('.calc-btn');
+    if (!btn) return;
+    const val = btn.dataset.val;
+
+    if (val === 'C') {
+      calcExpr = '';
+    } else if (val === 'back') {
+      calcExpr = calcExpr.slice(0, -1);
+    } else if (val === '=') {
+      try {
+        // only allow digits, operators, decimal points, and % — no free-form code
+        if (!/^[0-9+\-*/.% ]+$/.test(calcExpr)) throw new Error('invalid');
+        const safeExpr = calcExpr.replace(/%/g, '/100');
+        const result = Function('"use strict"; return (' + safeExpr + ')')();
+        calcExpr = Number.isFinite(result) ? String(Math.round(result * 1e10) / 1e10) : 'Error';
+      } catch (err) {
+        calcExpr = 'Error';
+      }
+    } else {
+      if (calcExpr === 'Error') calcExpr = '';
+      calcExpr += val;
+    }
+    calcRender();
+  });
+  calcRender();
+
+  // Keyboard support for the calculator when the OS is focused.
+  document.addEventListener('keydown', (e) => {
+    if (!calculatorWindow.classList.contains('active')) return;
+    const allowed = '0123456789+-*/.%';
+    if (allowed.includes(e.key)) {
+      if (calcExpr === 'Error') calcExpr = '';
+      calcExpr += e.key;
+      calcRender();
+      e.preventDefault();
+    } else if (e.key === 'Enter' || e.key === '=') {
+      // Reuse the same calculation path as the on-screen equals button.
+      try {
+        if (!/^[0-9+\-*/.% ]+$/.test(calcExpr)) throw new Error('invalid');
+        const safeExpr = calcExpr.replace(/%/g, '/100');
+        const result = Function('\"use strict\"; return (' + safeExpr + ')')();
+        calcExpr = Number.isFinite(result) ? String(Math.round(result * 1e10) / 1e10) : 'Error';
+      } catch (_) { calcExpr = 'Error'; }
+      calcRender();
+      e.preventDefault();
+    } else if (e.key === 'Backspace') {
+      calcExpr = calcExpr.slice(0, -1);
+      calcRender();
+      e.preventDefault();
+    } else if (e.key === 'Escape') {
+      calcExpr = '';
+      calcRender();
+      e.preventDefault();
+    }
+  });
+
+  // ================= CAMERA APP =================
+  let cameraStream = null;
+
+  function openCamera(){
+    cameraWindow.classList.add('active');
+    cameraAppBtn.classList.add('active-app');
+    cameraFallback.style.display = 'none';
+    retakeBtn.style.display = 'none';
+    cameraSnapshot.style.display = 'none';
+    cameraVideo.style.display = 'block';
+
+    if (cameraStream) return; // already running
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      cameraFallback.style.display = 'flex';
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'user' } }, audio: false })
+      .then((stream) => {
+        cameraStream = stream;
+        cameraVideo.srcObject = stream;
+      })
+      .catch(() => {
+        cameraFallback.style.display = 'flex';
+      });
+  }
+
+  function closeCameraWindow(){
+    cameraWindow.classList.remove('active');
+    cameraAppBtn.classList.remove('active-app');
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream = null;
+    }
+  }
+
+  cameraAppBtn.addEventListener('click', () => {
+    if (cameraWindow.classList.contains('minimized')) {
+      restoreWindow(cameraWindow);
+      cameraWindow.classList.add('active');
+      cameraAppBtn.classList.add('active-app');
+      return;
+    }
+    if (cameraWindow.classList.contains('active')) {
+      minimizeWindow(cameraWindow);
+      cameraAppBtn.classList.remove('active-app');
+      return;
+    }
+    openCamera();
+    restoreWindow(cameraWindow);
+    cameraAppBtn.classList.add('active-app');
+  });
+  cameraClose.addEventListener('click', closeCameraWindow);
+
+  captureBtn.addEventListener('click', () => {
+    if (!cameraStream) return;
+    cameraCanvas.width = cameraVideo.videoWidth;
+    cameraCanvas.height = cameraVideo.videoHeight;
+    cameraCanvas.getContext('2d').drawImage(cameraVideo, 0, 0);
+    cameraSnapshot.src = cameraCanvas.toDataURL('image/png');
+    cameraSnapshot.style.display = 'block';
+    cameraVideo.style.display = 'none';
+    retakeBtn.style.display = 'inline-block';
+  });
+  retakeBtn.addEventListener('click', () => {
+    cameraSnapshot.style.display = 'none';
+    cameraVideo.style.display = 'block';
+    retakeBtn.style.display = 'none';
+  });
+
+  // ================= GALLERY APP (hubble.exe) =================
+  // Shared open/minimize/close behavior for the simple apps.
+  function toggleAppWindow(win, btn){
+    if (win.classList.contains('minimized')) {
+      restoreWindow(win);
+      win.classList.add('active');
+      btn.classList.add('active-app');
+      return true;
+    }
+    if (win.classList.contains('active')) {
+      minimizeWindow(win);
+      btn.classList.remove('active-app');
+      return false;
+    }
+    win.classList.add('active');
+    restoreWindow(win);
+    btn.classList.add('active-app');
+    return true;
+  }
+
+  // [EDIT: GALLERY] add/remove photos here — they live in ./hubble/
+  const HUBBLE_PHOTOS = [
+    { src:'./hubble/M3.jpg',            title:'MESSIER 3',   desc:'Globular cluster · Canes Venatici' },
+    { src:'./hubble/NGC6723.jpg',       title:'NGC 6723',    desc:'Globular cluster · Sagitta' },
+    { src:'./hubble/NGC6426.jpg',       title:'NGC 6426',    desc:'Globular cluster · Ophiuchus' },
+    { src:'./hubble/NGC4654.jpg',       title:'NGC 4654',    desc:'Spiral galaxy · Virgo' },
+    { src:'./hubble/LMC-L95.jpg',       title:'LMC · L95',   desc:'Large Magellanic Cloud survey field' },
+    { src:'./hubble/STScI-object.jpg',  title:'STSCI OBJECT',desc:'Deep field capture · STScI archive' }
+  ];
+
+  galleryGrid.innerHTML = HUBBLE_PHOTOS.map((p, i) => `
+    <button class="gallery-thumb" data-index="${i}" aria-label="open ${p.title}">
+      <img src="${p.src}" alt="${p.title}" loading="lazy" />
+      <span>${p.title}</span>
+    </button>
+  `).join('');
+
+  galleryGrid.addEventListener('click', (e) => {
+    const thumb = e.target.closest('.gallery-thumb');
+    if (!thumb) return;
+    const photo = HUBBLE_PHOTOS[+thumb.dataset.index];
+    galleryViewImg.src = photo.src;
+    galleryViewImg.alt = photo.title;
+    galleryViewTitle.textContent = photo.title;
+    galleryViewDesc.textContent = photo.desc;
+    galleryView.classList.add('active');
+  });
+  galleryBackBtn.addEventListener('click', () => galleryView.classList.remove('active'));
+
+  galleryAppBtn.addEventListener('click', () => toggleAppWindow(galleryWindow, galleryAppBtn));
+  galleryClose.addEventListener('click', () => closeWindow(galleryWindow, galleryAppBtn));
+
+  // ================= NOTES APP (notes.exe) =================
+  const NOTES_KEY = 'stardrift-notes';
+  try { notesArea.value = localStorage.getItem(NOTES_KEY) || ''; } catch (err) {}
+
+  let notesSaveTimer = null;
+  function updateNotesStatus(saved){
+    const words = notesArea.value.trim() ? notesArea.value.trim().split(/\s+/).length : 0;
+    notesWords.textContent = words + (words === 1 ? ' word' : ' words');
+    notesSaved.textContent = saved ? 'SAVED ✓' : 'SAVING...';
+  }
+  notesArea.addEventListener('input', () => {
+    updateNotesStatus(false);
+    clearTimeout(notesSaveTimer);
+    notesSaveTimer = setTimeout(() => {
+      try { localStorage.setItem(NOTES_KEY, notesArea.value); } catch (err) {}
+      updateNotesStatus(true);
+    }, 400);
+  });
+  notesAppBtn.addEventListener('click', () => {
+    if (toggleAppWindow(notesWindow, notesAppBtn)) setTimeout(() => notesArea.focus(), 60);
+  });
+  notesClose.addEventListener('click', () => closeWindow(notesWindow, notesAppBtn));
+  updateNotesStatus(true);
+
+  // ================= TERMINAL APP (terminal.exe) =================
+  termOutput.innerHTML =
+    '<div>StarDriftOS drift-sh v1.0</div>' +
+    '<div class="dim">type <span class="cmd">help</span> to see what this thing can do.</div>';
+
+  let termHistory = [];
+  let termHistoryIndex = -1;
+
+  function termPrint(text, cls){
+    const line = document.createElement('div');
+    if (cls) line.className = cls;
+    line.textContent = text;
+    termOutput.appendChild(line);
+    termOutput.scrollTop = termOutput.scrollHeight;
+  }
+
+  function formatUptime(){
+    return `${String(Math.floor(seconds / 3600)).padStart(2,'0')}:${String(Math.floor((seconds % 3600) / 60)).padStart(2,'0')}:${String(seconds % 60).padStart(2,'0')}`;
+  }
+
+  const TERM_OPEN_MAP = {
+    browser:'browserAppBtn', web:'browserAppBtn', wikipedia:'browserAppBtn',
+    calc:'calculatorAppBtn', calculator:'calculatorAppBtn',
+    camera:'cameraAppBtn',
+    hubble:'galleryAppBtn', photos:'galleryAppBtn', gallery:'galleryAppBtn',
+    notes:'notesAppBtn',
+    snake:'gameAppBtn', game:'gameAppBtn',
+    settings:'settingsAppBtn'
+  };
+  const TERM_CLOSE_MAP = {
+    browser:'browserClose', web:'browserClose', wikipedia:'browserClose',
+    calc:'calcClose', calculator:'calcClose',
+    camera:'cameraClose',
+    hubble:'galleryClose', photos:'galleryClose', gallery:'galleryClose',
+    notes:'notesClose',
+    snake:'gameClose', game:'gameClose',
+    terminal:'terminalClose',
+    settings:'settingsClose'
+  };
+
+  function runCommand(raw){
+    termPrint(`guest@stardrift:~$ ${raw}`, 'cmd');
+    const input = raw.trim();
+    if (!input) return;
+
+    const [cmd, ...args] = input.split(/\s+/);
+    switch (cmd.toLowerCase()) {
+      case 'help':
+        [
+          'help              show this list',
+          'about             what is StarDriftOS',
+          'apps              list installed apps',
+          'open <app>        launch: browser calc camera hubble notes snake settings',
+          'close <app>       close one of those (or terminal)',
+          'wallpaper [name]  list wallpapers, or set one',
+          'neofetch          system info',
+          'echo <text>       repeat after you',
+          'date              current date/time',
+          'uptime            how long this session has been alive',
+          'whoami            who are you?',
+          'ship              ship something',
+          'sudo              try your luck',
+          'clear             wipe the terminal',
+          'exit              close terminal'
+        ].forEach(l => termPrint(l, 'dim'));
+        break;
+      case 'about':
+        termPrint('StarDriftOS v1.0 — a tiny webOS built from scratch in one html file.', 'amber');
+        termPrint('currently drifting through the Stardance Challenge.', 'dim');
+        break;
+      case 'apps':
+        termPrint('installed: browser, calc, camera, hubble, notes, snake, settings', 'dim');
+        break;
+      case 'open': case 'launch': {
+        const target = (args[0] || '').toLowerCase();
+        const btnId = TERM_OPEN_MAP[target];
+        if (btnId) {
+          document.getElementById(btnId).click();
+          termPrint(`launching ${target}...`, 'dim');
+        } else {
+          termPrint(`unknown app: ${target || '(none)'} — try 'apps'`, 'err');
+        }
+        break;
+      }
+      case 'close': case 'quit': {
+        const target = (args[0] || '').toLowerCase();
+        const btnId = TERM_CLOSE_MAP[target];
+        if (btnId) {
+          document.getElementById(btnId).click();
+          termPrint(`${target} closed.`, 'dim');
+        } else {
+          termPrint(`don't know how to close: ${target || '(none)'}`, 'err');
+        }
+        break;
+      }
+      case 'wallpaper': {
+        if (!args[0]) {
+          termPrint('available: ' + [...document.querySelectorAll('.wallpaper-option')].map(b => b.dataset.wallpaper).join(', '), 'dim');
+          break;
+        }
+        const valid = [...document.querySelectorAll('.wallpaper-option')].some(b => b.dataset.wallpaper === args[0]);
+        if (valid) {
+          setWallpaper(args[0]);
+          termPrint(`wallpaper set to ${args[0]} ✓`);
+        } else {
+          termPrint("unknown wallpaper — run 'wallpaper' for the list", 'err');
+        }
+        break;
+      }
+      case 'neofetch': {
+        const wallClass = [...document.body.classList].find(c =>
+          c.startsWith('os-solid-') || c.startsWith('os-gloss-') || c.startsWith('wallpaper-')
+        ) || 'default';
+        [
+          'guest@stardrift',
+          '---------------',
+          'OS           StarDriftOS 1.0 (web)',
+          'Host         your browser',
+          'Kernel       html + css + js',
+          'Shell        drift-sh',
+          `Uptime       ${formatUptime()}`,
+          `Resolution   ${window.innerWidth}x${window.innerHeight}`,
+          `Wallpaper    ${wallClass}`,
+          'Stardust     ∞'
+        ].forEach(l => termPrint(l));
+        break;
+      }
+      case 'echo':
+        termPrint(args.join(' ') || '');
+        break;
+      case 'date':
+        termPrint(new Date().toString(), 'dim');
+        break;
+      case 'uptime':
+        termPrint(`session alive for ${formatUptime()}`, 'dim');
+        break;
+      case 'whoami':
+        termPrint('guest — but the satellite likes you.', 'amber');
+        break;
+      case 'ship':
+        ['    /\\', '   |  |', '   |()|   shipped.', '  /|__|\\  nice.'].forEach(l => termPrint(l, 'amber'));
+        break;
+      case 'sudo':
+        termPrint('nice try. this orbit runs on trust.', 'err');
+        break;
+      case 'clear':
+        termOutput.innerHTML = '';
+        break;
+      case 'exit':
+        closeWindow(terminalWindow, terminalAppBtn);
+        break;
+      default:
+        termPrint(`command not found: ${cmd} — try 'help'`, 'err');
+    }
+  }
+
+  termInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const value = termInput.value;
+      if (value.trim() && termHistory[termHistory.length - 1] !== value.trim()) {
+        termHistory.push(value.trim());
+      }
+      termHistoryIndex = -1;
+      runCommand(value);
+      termInput.value = '';
+    } else if (e.key === 'ArrowUp') {
+      if (!termHistory.length) return;
+      if (termHistoryIndex === -1) termHistoryIndex = termHistory.length - 1;
+      else termHistoryIndex = Math.max(0, termHistoryIndex - 1);
+      termInput.value = termHistory[termHistoryIndex];
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      if (termHistoryIndex === -1) return;
+      termHistoryIndex++;
+      if (termHistoryIndex >= termHistory.length) {
+        termHistoryIndex = -1;
+        termInput.value = '';
+      } else {
+        termInput.value = termHistory[termHistoryIndex];
+      }
+      e.preventDefault();
+    }
+  });
+  terminalBody.addEventListener('click', () => termInput.focus());
+
+  terminalAppBtn.addEventListener('click', () => {
+    if (toggleAppWindow(terminalWindow, terminalAppBtn)) setTimeout(() => termInput.focus(), 60);
+  });
+  terminalClose.addEventListener('click', () => closeWindow(terminalWindow, terminalAppBtn));
+
+  // ================= SNAKE GAME (snake.exe) =================
+  const SNAKE_CELL = 15;
+  const SNAKE_COLS = 20;
+  const SNAKE_ROWS = 20;
+  const SNAKE_BASE_SPEED = 130;
+  const snakeCtx = snakeCanvas.getContext('2d');
+
+  let snake = null;
+  let snakeDir = null;
+  let snakeNextDirs = [];
+  let snakeFood = null;
+  let snakeScoreVal = 0;
+  let snakeBestVal = 0;
+  let snakeSpeed = SNAKE_BASE_SPEED;
+  let snakeTimer = null;
+  let snakeRunning = false;
+  let snakeDead = false;
+
+  try { snakeBestVal = parseInt(localStorage.getItem('stardrift-snake-best'), 10) || 0; } catch (err) {}
+  snakeBestEl.textContent = snakeBestVal;
+
+  function placeSnakeFood(){
+    do {
+      snakeFood = {
+        x: Math.floor(Math.random() * SNAKE_COLS),
+        y: Math.floor(Math.random() * SNAKE_ROWS)
+      };
+    } while (snake.some(seg => seg.x === snakeFood.x && seg.y === snakeFood.y));
+  }
+
+  function drawSnake(){
+    snakeCtx.fillStyle = '#04070f';
+    snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+
+    // faint grid
+    snakeCtx.strokeStyle = 'rgba(232,236,244,0.04)';
+    snakeCtx.lineWidth = 1;
+    for (let i = 1; i < SNAKE_COLS; i++) {
+      snakeCtx.beginPath();
+      snakeCtx.moveTo(i * SNAKE_CELL + 0.5, 0);
+      snakeCtx.lineTo(i * SNAKE_CELL + 0.5, snakeCanvas.height);
+      snakeCtx.stroke();
+    }
+    for (let i = 1; i < SNAKE_ROWS; i++) {
+      snakeCtx.beginPath();
+      snakeCtx.moveTo(0, i * SNAKE_CELL + 0.5);
+      snakeCtx.lineTo(snakeCanvas.width, i * SNAKE_CELL + 0.5);
+      snakeCtx.stroke();
+    }
+
+    if (snakeFood) {
+      snakeCtx.save();
+      snakeCtx.shadowColor = '#ffc93c';
+      snakeCtx.shadowBlur = 10;
+      snakeCtx.fillStyle = '#ffc93c';
+      snakeCtx.beginPath();
+      snakeCtx.arc(
+        snakeFood.x * SNAKE_CELL + SNAKE_CELL / 2,
+        snakeFood.y * SNAKE_CELL + SNAKE_CELL / 2,
+        SNAKE_CELL * 0.32,
+        0,
+        Math.PI * 2
+      );
+      snakeCtx.fill();
+      snakeCtx.restore();
+    }
+
+    if (snake) {
+      snake.forEach((seg, idx) => {
+        const pad = idx === 0 ? 1 : 2;
+        snakeCtx.fillStyle = idx === 0
+          ? '#3dffa2'
+          : `rgba(41,211,200,${(0.85 - (idx / Math.max(1, snake.length - 1)) * 0.55).toFixed(2)})`;
+        snakeCtx.fillRect(
+          seg.x * SNAKE_CELL + pad,
+          seg.y * SNAKE_CELL + pad,
+          SNAKE_CELL - pad * 2,
+          SNAKE_CELL - pad * 2
+        );
+      });
+    }
+
+    if (snakeDead) {
+      snakeCtx.fillStyle = 'rgba(4,7,15,0.78)';
+      snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+      snakeCtx.textAlign = 'center';
+      snakeCtx.fillStyle = '#3dffa2';
+      snakeCtx.font = "700 22px 'Space Grotesk', sans-serif";
+      snakeCtx.fillText('GAME OVER', 150, 142);
+      snakeCtx.fillStyle = '#8590ad';
+      snakeCtx.font = "10px 'JetBrains Mono', monospace";
+      snakeCtx.fillText('press space to respawn', 150, 164);
+    } else if (!snakeRunning) {
+      snakeCtx.fillStyle = '#8590ad';
+      snakeCtx.font = "10px 'JetBrains Mono', monospace";
+      snakeCtx.fillText('press start or any arrow key', 150, 288);
+    }
+  }
+
+  function snakeReset(){
+    snake = [{x:9,y:10},{x:8,y:10},{x:7,y:10}];
+    snakeDir = {x:1,y:0};
+    snakeNextDirs = [];
+    snakeScoreVal = 0;
+    snakeSpeed = SNAKE_BASE_SPEED;
+    snakeDead = false;
+    snakeScoreEl.textContent = '0';
+    placeSnakeFood();
+    drawSnake();
+  }
+
+  function snakeScheduleTick(){
+    clearTimeout(snakeTimer);
+    snakeTimer = setTimeout(snakeTick, snakeSpeed);
+  }
+
+  function snakeTick(){
+    if (!snakeRunning) return;
+    if (!gameWindow.classList.contains('active') || gameWindow.classList.contains('minimized')) {
+      pauseSnake();
+      return;
+    }
+
+    while (snakeNextDirs.length) {
+      const nextDir = snakeNextDirs.shift();
+      if (!(nextDir.x === -snakeDir.x && nextDir.y === -snakeDir.y)) {
+        snakeDir = nextDir;
+        break;
+      }
+    }
+
+    const head = {
+      x: snake[0].x + snakeDir.x,
+      y: snake[0].y + snakeDir.y
+    };
+
+    const hitWall = head.x < 0 || head.y < 0 || head.x >= SNAKE_COLS || head.y >= SNAKE_ROWS;
+    const eating = head.x === snakeFood.x && head.y === snakeFood.y;
+    const bodyToCheck = eating ? snake : snake.slice(0, -1);
+    const hitSelf = bodyToCheck.some(seg => seg.x === head.x && seg.y === head.y);
+
+    if (hitWall || hitSelf) {
+      snakeDie();
+      return;
+    }
+
+    snake.unshift(head);
+    if (eating) {
+      snakeScoreVal++;
+      snakeScoreEl.textContent = snakeScoreVal;
+      snakeSpeed = Math.max(70, snakeSpeed - 3);
+      placeSnakeFood();
+    } else {
+      snake.pop();
+    }
+
+    drawSnake();
+    snakeScheduleTick();
+  }
+
+  function startSnake(){
+    snakeReset();
+    snakeRunning = true;
+    snakeStartBtn.textContent = 'pause';
+    snakeScheduleTick();
+  }
+
+  function pauseSnake(){
+    snakeRunning = false;
+    clearTimeout(snakeTimer);
+    snakeStartBtn.textContent = snakeDead ? 'respawn' : 'resume';
+    drawSnake();
+  }
+
+  function resumeSnake(){
+    if (snakeDead || !snake) {
+      startSnake();
+      return;
+    }
+    snakeRunning = true;
+    snakeStartBtn.textContent = 'pause';
+    snakeScheduleTick();
+  }
+
+  function snakeDie(){
+    snakeDead = true;
+    snakeRunning = false;
+    clearTimeout(snakeTimer);
+    if (snakeScoreVal > snakeBestVal) {
+      snakeBestVal = snakeScoreVal;
+      snakeBestEl.textContent = snakeBestVal;
+      try { localStorage.setItem('stardrift-snake-best', String(snakeBestVal)); } catch (err) {}
+    }
+    snakeStartBtn.textContent = 'respawn';
+    drawSnake();
+  }
+
+  snakeStartBtn.addEventListener('click', () => {
+    if (snakeDead || !snake) startSnake();
+    else if (snakeRunning) pauseSnake();
+    else resumeSnake();
+  });
+
+  const SNAKE_KEYS = {
+    arrowup:[0,-1], w:[0,-1],
+    arrowdown:[0,1], s:[0,1],
+    arrowleft:[-1,0], a:[-1,0],
+    arrowright:[1,0], d:[1,0]
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (!gameWindow.classList.contains('active') || gameWindow.classList.contains('minimized')) return;
+    if (e.target.matches('input, textarea')) return;
+
+    const key = e.key.toLowerCase();
+    if (SNAKE_KEYS[key]) {
+      e.preventDefault();
+      const [dx, dy] = SNAKE_KEYS[key];
+      const last = snakeNextDirs.length ? snakeNextDirs[snakeNextDirs.length - 1] : (snakeDir || {x:1,y:0});
+      if (!(last.x === -dx && last.y === -dy) && !(last.x === dx && last.y === dy)) {
+        snakeNextDirs.push({x:dx, y:dy});
+      }
+      if (snakeDead) return;
+      if (!snakeRunning) resumeSnake();
+    } else if (key === ' ') {
+      e.preventDefault();
+      if (snakeDead || !snake) startSnake();
+      else if (snakeRunning) pauseSnake();
+      else resumeSnake();
+    }
+  });
+
+  gameAppBtn.addEventListener('click', () => {
+    if (toggleAppWindow(gameWindow, gameAppBtn) && !snake) snakeReset();
+  });
+  gameClose.addEventListener('click', () => {
+    closeWindow(gameWindow, gameAppBtn);
+    pauseSnake();
+  });
+
+  snakeReset();
+
+  function spawnExplosion(x, y){
+    const colors = ['#3dffa2', '#29d3c8', '#ffc93c', '#e8ecf4'];
+    const count = 20;
+    for (let i = 0; i < count; i++){
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.4;
+      const dist = 60 + Math.random() * 70;
+      p.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+      p.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 750);
+    }
+
+    const boom = document.createElement('div');
+    boom.className = 'boom-text';
+    boom.textContent = 'BOOM 💥';
+    boom.style.left = x + 'px';
+    boom.style.top = y + 'px';
+    document.body.appendChild(boom);
+    setTimeout(() => boom.remove(), 950);
+  }
+}); // end DOMContentLoaded
+</script>
+
+<!-- loading screen, shown when "enter my os" is clicked -->
+<div class="loading-screen" id="loadingScreen">
+  <svg class="loading-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="26" width="14" height="7" rx="1" transform="rotate(-40 6 26)" fill="#3dffa2" opacity="0.85"/>
+    <rect x="44" y="26" width="14" height="7" rx="1" transform="rotate(40 44 26)" fill="#3dffa2" opacity="0.85"/>
+    <rect x="24" y="24" width="16" height="16" rx="3" fill="#e8ecf4"/>
+    <rect x="27" y="27" width="10" height="10" rx="1.5" fill="#0b1226"/>
+    <circle cx="32" cy="32" r="1.6" fill="#29d3c8"/>
+    <line x1="20" y1="18" x2="26" y2="24" stroke="#8590ad" stroke-width="1.4"/>
+    <circle cx="19" cy="16" r="2" fill="#ffc93c"/>
+  </svg>
+  <div class="loading-text" id="loadingText">BOOTING DESKTOP ENVIRONMENT...</div>
+  <div class="loading-bar-track"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
+  <div class="loading-pct" id="loadingPct">0%</div>
+</div>
+
+<!-- desktop mode, revealed after loading finishes -->
+
+<div class="wallpaper-layer" id="wallpaperLayer">
+  <div class="planet-orb" style="width:150px;height:150px;right:8%;top:18%;background:radial-gradient(circle at 35% 30%,rgba(41,211,200,.55),rgba(7,20,35,.92) 68%);--planet-duration:78s;"></div>
+  <div class="planet-orb" style="width:75px;height:75px;left:7%;bottom:17%;background:radial-gradient(circle at 35% 30%,rgba(167,139,250,.50),rgba(20,12,35,.94) 70%);--planet-duration:62s;"></div>
+</div>
+
+<div class="desktop-screen" id="desktopScreen">
+  <!-- ambient background objects: purely decorative, non-interactive -->
+  <div class="ambient-obj amb-sat-a">
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="26" width="14" height="7" rx="1" transform="rotate(-40 6 26)" fill="#3dffa2"/>
+      <rect x="44" y="26" width="14" height="7" rx="1" transform="rotate(40 44 26)" fill="#3dffa2"/>
+      <rect x="24" y="24" width="16" height="16" rx="3" fill="#e8ecf4"/>
+      <rect x="27" y="27" width="10" height="10" rx="1.5" fill="#0b1226"/>
+    </svg>
+  </div>
+  <div class="ambient-obj amb-sat-b">
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="26" width="14" height="7" rx="1" transform="rotate(-40 6 26)" fill="#29d3c8"/>
+      <rect x="44" y="26" width="14" height="7" rx="1" transform="rotate(40 44 26)" fill="#29d3c8"/>
+      <rect x="24" y="24" width="16" height="16" rx="3" fill="#e8ecf4"/>
+      <rect x="27" y="27" width="10" height="10" rx="1.5" fill="#0b1226"/>
+    </svg>
+  </div>
+  <div class="ambient-obj amb-ast-a">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="8,4 24,2 36,14 34,30 20,38 6,32 2,18" fill="#5b5f6b"/>
+      <circle cx="14" cy="16" r="3" fill="#3f434d"/>
+      <circle cx="24" cy="24" r="2" fill="#3f434d"/>
+    </svg>
+  </div>
+  <div class="ambient-obj amb-ast-b">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="6,10 20,2 34,10 36,24 26,36 10,32 2,20" fill="#6b6f7b"/>
+      <circle cx="16" cy="14" r="3.5" fill="#494d57"/>
+      <circle cx="26" cy="26" r="2.5" fill="#494d57"/>
+    </svg>
+  </div>
+  <div class="ambient-obj amb-ast-c">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,2 30,6 34,24 22,36 6,28 4,12" fill="#545863"/>
+      <circle cx="18" cy="16" r="2.5" fill="#35383f"/>
+    </svg>
+  </div>
+
+  <div class="desktop-app-status" id="desktopAppStatus">
+    <span class="active-app-name" id="activeAppName">DESKTOP</span>
+    <span class="system-icons" aria-label="system status">
+      <span class="sys-icon" title="Wi-Fi">
+        <span class="wifi-bars"><i></i><i></i><i></i><i></i></span>
+      </span>
+      <span class="sys-icon" title="Volume">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 10v4h4l5 4V6l-5 4H4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M16 9.5c1.4 1.4 1.4 3.6 0 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <span class="volume-level">80%</span>
+      </span>
+    </span>
+  </div>
+
+  <div class="orbital-clock" id="orbitalClock">
+    <div class="clock-head">
+      <span>TIME.EXE // LOCAL</span>
+      <span class="clock-live"><i class="clock-live-dot"></i>LIVE</span>
+    </div>
+    <div class="clock-time">
+      <span id="orbitalClockHM">00:00</span><span class="clock-seconds" id="orbitalClockSS">:00</span>
+    </div>
+    <div class="clock-date" id="orbitalClockDate">loading orbit date...</div>
+    <div class="mini-calendar" id="miniCalendar">
+      <div class="calendar-title">
+        <span>CAL // DATE</span>
+        <span class="calendar-month" id="calendarMonth">---</span>
+      </div>
+      <div class="calendar-week">
+        <span>SU</span><span>MO</span><span>TU</span><span>WE</span><span>TH</span><span>FR</span><span>SA</span>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+    <div class="clock-footer">
+      <span>orbit status <strong>ONLINE</strong></span>
+      <span class="clock-vibe" id="clockVibe">vibing ✦</span>
+    </div>
+  </div>
+
+  <div class="desktop-topbar">
+    <span class="pill" id="backToOrbit">← back to orbit</span>
+    <span class="pill desktop-hint">catch the satellite</span>
+  </div>
+  <div class="desktop-sat" id="desktopSat">
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="26" width="14" height="7" rx="1" transform="rotate(-40 6 26)" fill="#3dffa2" opacity="0.9"/>
+      <rect x="44" y="26" width="14" height="7" rx="1" transform="rotate(40 44 26)" fill="#3dffa2" opacity="0.9"/>
+      <rect x="24" y="24" width="16" height="16" rx="3" fill="#e8ecf4"/>
+      <rect x="27" y="27" width="10" height="10" rx="1.5" fill="#0b1226"/>
+      <circle cx="32" cy="32" r="1.6" fill="#29d3c8"/>
+      <line x1="20" y1="18" x2="26" y2="24" stroke="#8590ad" stroke-width="1.4"/>
+      <circle cx="19" cy="16" r="2" fill="#ffc93c"/>
+    </svg>
+  </div>
+
+  <!-- browser app window (wikipedia) -->
+  <div class="browser-window os-window" id="browserWindow">
+    <div class="browser-titlebar">
+      <div class="window-controls">
+        <button class="close" id="browserClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <div class="browser-addressbar">
+        <span class="lock">🔒</span> en.wikipedia.org
+      </div>
+    </div>
+    <div class="browser-body">
+      <iframe id="wikiFrame" src="https://en.wikipedia.org/wiki/Special:Random" title="Wikipedia" loading="lazy"></iframe>
+      <div class="browser-fallback" id="browserFallback">
+        <span>couldn't load the page in-frame.</span>
+        <a href="https://en.wikipedia.org/wiki/Special:Random" target="_blank">open wikipedia in a new tab →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- calculator app window -->
+  <div class="calculator-window os-window" id="calculatorWindow">
+    <div class="browser-titlebar">
+      <div class="window-controls">
+        <button class="close" id="calcClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <div class="browser-addressbar" style="justify-content:center;">calculator.exe</div>
+    </div>
+    <div class="calc-display" id="calcDisplay">0</div>
+    <div class="calc-grid" id="calcGrid">
+      <button class="calc-btn clear" data-val="C">C</button>
+      <button class="calc-btn" data-val="back">⌫</button>
+      <button class="calc-btn op" data-val="%">%</button>
+      <button class="calc-btn op" data-val="/">÷</button>
+
+      <button class="calc-btn" data-val="7">7</button>
+      <button class="calc-btn" data-val="8">8</button>
+      <button class="calc-btn" data-val="9">9</button>
+      <button class="calc-btn op" data-val="*">×</button>
+
+      <button class="calc-btn" data-val="4">4</button>
+      <button class="calc-btn" data-val="5">5</button>
+      <button class="calc-btn" data-val="6">6</button>
+      <button class="calc-btn op" data-val="-">−</button>
+
+      <button class="calc-btn" data-val="1">1</button>
+      <button class="calc-btn" data-val="2">2</button>
+      <button class="calc-btn" data-val="3">3</button>
+      <button class="calc-btn op" data-val="+">+</button>
+
+      <button class="calc-btn" data-val="0" style="grid-column: span 2;">0</button>
+      <button class="calc-btn" data-val=".">.</button>
+      <button class="calc-btn equals" data-val="=" style="grid-column: span 1;">=</button>
+    </div>
+  </div>
+
+  <!-- camera app window -->
+  <div class="camera-window os-window" id="cameraWindow">
+    <div class="browser-titlebar">
+      <div class="window-controls">
+        <button class="close" id="cameraClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <div class="browser-addressbar" style="justify-content:center;">camera.exe</div>
+    </div>
+    <div class="camera-body">
+      <video id="cameraVideo" autoplay muted playsinline></video>
+      <img id="cameraSnapshot" alt="captured photo" />
+      <canvas id="cameraCanvas" style="display:none;"></canvas>
+      <div class="camera-fallback" id="cameraFallback">
+        <span>couldn't access your camera — check browser permissions, and note this needs https:// or localhost to work.</span>
+      </div>
+    </div>
+    <div class="camera-controls">
+      <button class="camera-btn primary" id="captureBtn">capture</button>
+      <button class="camera-btn" id="retakeBtn" style="display:none;">retake</button>
+    </div>
+  </div>
+
+  <!-- gallery app window (hubble photo viewer) -->
+  <div class="gallery-window os-window" id="galleryWindow">
+    <div class="browser-titlebar">
+      <div class="window-controls">
+        <button class="close" id="galleryClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <div class="browser-addressbar" style="justify-content:center;">hubble.exe</div>
+    </div>
+    <div class="gallery-body">
+      <div class="gallery-grid" id="galleryGrid"></div>
+      <div class="gallery-view" id="galleryView">
+        <div class="gallery-view-img"><img id="galleryViewImg" alt="" /></div>
+        <div class="gallery-view-meta">
+          <div style="min-width:0;">
+            <strong id="galleryViewTitle"></strong>
+            <p id="galleryViewDesc"></p>
+          </div>
+          <button class="gallery-back-btn" id="galleryBackBtn">← back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- notes app window -->
+  <div class="notes-window os-window" id="notesWindow">
+    <div class="browser-titlebar">
+      <div class="window-controls">
+        <button class="close" id="notesClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <div class="browser-addressbar" style="justify-content:center;">notes.exe</div>
+    </div>
+    <div class="notes-body">
+      <textarea class="notes-area" id="notesArea" placeholder="type anything... it saves itself." spellcheck="false"></textarea>
+      <div class="notes-status">
+        <span id="notesWords">0 words</span>
+        <span class="saved" id="notesSaved">SAVED ✓</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- terminal app window -->
+  <div class="terminal-window os-window" id="terminalWindow">
+    <div class="browser-titlebar">
+      <div class="window-controls">
+        <button class="close" id="terminalClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <div class="browser-addressbar" style="justify-content:center;">terminal.exe</div>
+    </div>
+    <div class="terminal-body" id="terminalBody">
+      <div class="term-output" id="termOutput"></div>
+      <div class="term-input-line">
+        <span class="term-prompt">guest@stardrift:~$</span>
+        <input class="term-input" id="termInput" autocomplete="off" spellcheck="false" aria-label="terminal input" />
+      </div>
+    </div>
+  </div>
+
+  <!-- snake game window -->
+  <div class="game-window os-window" id="gameWindow">
+    <div class="browser-titlebar">
+      <div class="window-controls">
+        <button class="close" id="gameClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <div class="browser-addressbar" style="justify-content:center;">snake.exe</div>
+    </div>
+    <div class="game-body">
+      <div class="game-header">
+        <span>score <b id="snakeScore">0</b></span>
+        <span>best <b id="snakeBest">0</b></span>
+      </div>
+      <canvas class="snake-canvas" id="snakeCanvas" width="300" height="300"></canvas>
+      <button class="game-start-btn" id="snakeStartBtn">start</button>
+      <div class="game-hint">arrows / wasd to steer · space to pause · eat the star</div>
+    </div>
+  </div>
+
+  <!-- taskbar -->
+
+  <div class="settings-window os-window" id="settingsWindow">
+    <div class="settings-titlebar">
+      <div class="window-controls">
+        <button class="close" id="settingsClose" title="close" aria-label="Close"></button>
+        <button class="minimize" data-window-action="minimize" title="minimize" aria-label="Minimize"></button>
+        <button class="maximize" data-window-action="maximize" title="maximize" aria-label="Maximize"></button>
+      </div>
+      <span class="window-title">settings.exe // wallpaper control</span>
+    </div>
+    <div class="settings-body">
+      <h2 class="settings-heading">Choose your orbit</h2>
+      <p class="settings-sub">switch the live desktop atmosphere anytime.</p>
+      <div class="wallpaper-category">SOLID // CLEAN</div>
+      <div class="wallpaper-options">
+        <button class="wallpaper-option selected" data-wallpaper="solid-void">
+          <div class="wallpaper-preview solid-void"></div>
+          <strong>VOID</strong><span>pure dark</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="solid-graphite">
+          <div class="wallpaper-preview solid-graphite"></div>
+          <strong>GRAPHITE</strong><span>soft grey</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="solid-midnight">
+          <div class="wallpaper-preview solid-midnight"></div>
+          <strong>MIDNIGHT</strong><span>deep blue</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="solid-forest">
+          <div class="wallpaper-preview solid-forest"></div>
+          <strong>FOREST</strong><span>dark green</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="solid-plum">
+          <div class="wallpaper-preview solid-plum"></div>
+          <strong>PLUM</strong><span>dark violet</span>
+        </button>
+      </div>
+
+      <div class="wallpaper-category">GLOSSY // GLASS</div>
+      <div class="wallpaper-options">
+        <button class="wallpaper-option" data-wallpaper="gloss-black">
+          <div class="wallpaper-preview gloss-black"></div>
+          <strong>BLACK GLASS</strong><span>chrome gloss</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="gloss-cyan">
+          <div class="wallpaper-preview gloss-cyan"></div>
+          <strong>CYAN GLOW</strong><span>neon glass</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="gloss-purple">
+          <div class="wallpaper-preview gloss-purple"></div>
+          <strong>PURPLE GLASS</strong><span>soft neon</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="gloss-red">
+          <div class="wallpaper-preview gloss-red"></div>
+          <strong>RED GLOSS</strong><span>night mode</span>
+        </button>
+        <button class="wallpaper-option" data-wallpaper="gloss-ocean">
+          <div class="wallpaper-preview gloss-ocean"></div>
+          <strong>OCEAN GLASS</strong><span>blue chrome</span>
+        </button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="desktop-taskbar">
+    <button class="taskbar-app" id="settingsAppBtn" title="settings">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="3.1" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12 2.8v2.1M12 19.1v2.1M21.2 12h-2.1M4.9 12H2.8M18.5 5.5 17 7M7 17l-1.5 1.5M18.5 18.5 17 17M7 7 5.5 5.5"
+          stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="label">settings</span>
+    </button>
+    <button class="taskbar-app" id="browserAppBtn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9s1.3-6.4 3.8-9z" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+      <span class="label">browser</span>
+    </button>
+    <button class="taskbar-app" id="calculatorAppBtn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="2.5" width="16" height="19" rx="2" stroke="currentColor" stroke-width="1.6"/>
+        <line x1="7" y1="6.5" x2="17" y2="6.5" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="7.5" cy="11" r="1" fill="currentColor"/>
+        <circle cx="12" cy="11" r="1" fill="currentColor"/>
+        <circle cx="16.5" cy="11" r="1" fill="currentColor"/>
+        <circle cx="7.5" cy="15" r="1" fill="currentColor"/>
+        <circle cx="12" cy="15" r="1" fill="currentColor"/>
+        <circle cx="16.5" cy="15" r="1" fill="currentColor"/>
+        <circle cx="7.5" cy="19" r="1" fill="currentColor"/>
+        <circle cx="12" cy="19" r="1" fill="currentColor"/>
+      </svg>
+      <span class="label">calc</span>
+    </button>
+    <button class="taskbar-app" id="cameraAppBtn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 8.5C3 7.4 3.9 6.5 5 6.5H7.5L8.7 4.5H15.3L16.5 6.5H19C20.1 6.5 21 7.4 21 8.5V17.5C21 18.6 20.1 19.5 19 19.5H5C3.9 19.5 3 18.6 3 17.5V8.5Z" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="12" cy="13" r="3.3" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+      <span class="label">camera</span>
+    </button>
+    <button class="taskbar-app" id="galleryAppBtn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="4.5" width="18" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="8.6" cy="9.6" r="1.6" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M4 17.5 9.5 12l4 4 3-3L21 17.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+      <span class="label">hubble</span>
+    </button>
+    <button class="taskbar-app" id="notesAppBtn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 4.5h14v12l-3.5 3.5H5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M15.5 20v-3.5H19" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M8.5 9.5h7M8.5 13h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="label">notes</span>
+    </button>
+    <button class="taskbar-app" id="terminalAppBtn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="4.5" width="18" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M7 9.5 9.5 12 7 14.5M12.5 15H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="label">terminal</span>
+    </button>
+    <button class="taskbar-app" id="gameAppBtn">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 7.5h9a4.5 4.5 0 0 1 4.4 5.4l-.8 3.6a2.3 2.3 0 0 1-4 1l-1.6-2h-5l-1.6 2a2.3 2.3 0 0 1-4-1l-.8-3.6A4.5 4.5 0 0 1 7.5 7.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M8.2 10.7v3M6.7 12.2h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="15.7" cy="11.2" r=".9" fill="currentColor"/>
+        <circle cx="17.7" cy="13.2" r=".9" fill="currentColor"/>
+      </svg>
+      <span class="label">snake</span>
+    </button>
+  </div>
+</div>
+
+</body>
+</html>
