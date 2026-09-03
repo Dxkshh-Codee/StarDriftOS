@@ -39,12 +39,10 @@ npx serve .
 
 
 StarDriftOS/
-├── index.html          # main file to deploy
-├── StarDriftOS.html    # same as index.html
-├── satellite.png
+├── index.html
+├── StarDriftOS.html
 ├── pfp.webp
-└── hubble/             # images for the gallery
-
+└── hubble/
 
 ## Customizing
 
@@ -58,11 +56,6 @@ Search for these tags inside index.html:
 - [EDIT: GALLERY] - edit HUBBLE_PHOTOS array
 
 Terminal commands: help, about, apps, open <app>, close <app>, wallpaper, neofetch, echo, date, uptime, clea, exit.
-
-## Deploy to GitHub Pages
-
-It is a static site. Push index.html to main, then in GitHub go to Settings -> Pages -> Source: Deploy from a branch -> Branch: main / root -> Save. After a minute it will be live at https://yourname.github.io/StarDriftOS/.
-
 ## Notes
 
 Built with plain HTML.
