@@ -4,17 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>StarDriftOS — Dxkshh</title>
-
-<!-- ============================================================
-  QUICK EDIT GUIDE — search for these tags to personalize fast:
-  [EDIT: NAME]      -> your name / handle
-  [EDIT: TAGLINE]    -> one line about you
-  [EDIT: BIO]         -> short paragraph
-  [EDIT: LINKS]       -> your social / project links
-  [EDIT: TICKER]      -> scrolling facts about you
-  [EDIT: IMAGE]        -> swap satellite.png for your own image
-============================================================= -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
@@ -42,8 +31,7 @@
     overflow-x: hidden;
   }
 
-  /* ---------- background layers ---------- */
-  .stars{
+.stars{
     position: fixed; inset:0;
     background-image:
       radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.9), transparent),
@@ -75,7 +63,7 @@
     mask-image: radial-gradient(circle at 70% 45%, black 0%, transparent 65%);
   }
 
-  /* ---------- top status bar ---------- */
+  /
   .topbar{
     position: fixed; top:0; left:0; right:0; z-index: 20;
     display:flex; align-items:center; justify-content:space-between;
@@ -114,10 +102,10 @@
   .topbar-right span.pill{ opacity:0.9; }
   #clock{ color: var(--signal); }
 
-  /* push page content below the now-fixed top bar */
+
   .hero{ padding-top: 70px; }
 
-  /* ---------- hero ---------- */
+ 
   .hero{
     position: relative; z-index: 2;
     min-height: calc(100vh - 180px);
@@ -160,7 +148,7 @@
     opacity: 0;
   }
 
-  /* ---------- avatar next to name ---------- */
+  
   .avatar-row{
     display:flex;
     align-items:center;
@@ -250,7 +238,7 @@
     to{ opacity:1; transform: translateY(0); }
   }
 
-  /* ---------- image / satellite panel ---------- */
+  
   .hero-right{
     flex: 1 1 480px;
     position: relative;
@@ -306,7 +294,7 @@
   }
   @keyframes spin{ to{ transform: rotate(360deg); } }
 
-  /* ---------- mini drifting satellite ---------- */
+ 
   .mini-sat{
     position: fixed;
     top: 22%;
@@ -331,7 +319,7 @@
     .mini-sat{ display: none; }
   }
 
-  /* ---------- ticker ---------- */
+  
   .ticker-wrap{
     position: relative; z-index: 5;
     border-top: 1px solid var(--border);
@@ -370,7 +358,7 @@
     }
   }
 
-  /* ---------- floating window ---------- */
+ 
   .window{
     position: fixed;
     bottom: 92px;
@@ -421,7 +409,7 @@
     .window{ left: 16px; right: 16px; width: auto; bottom: 78px; }
   }
 
-  /* ---------- loading screen ---------- */
+  
   .loading-screen{
     position: fixed; inset: 0;
     z-index: 200;
@@ -464,7 +452,7 @@
     color: var(--ink-dim);
   }
 
-  /* ---------- desktop mode ---------- */
+ 
   .desktop-screen{
     position: fixed; inset: 0;
     z-index: 90;
@@ -473,8 +461,7 @@
   }
   .desktop-screen.active{ display: block; }
 
-  /* ---------- floating gen-z orbital clock ---------- */
-  /* ---------- glossy in-OS wallpapers ---------- */
+  
   body::after{
     content:"";
     position:fixed;
@@ -590,8 +577,7 @@
       var(--void);
   }
 
-  /* Keep selected Settings wallpaper visible after login.
-     These rules intentionally come after the desktop-active rule. */
+ 
   body.desktop-active.os-solid-void .desktop-screen{background:#070b16 !important;}
   body.desktop-active.os-solid-graphite .desktop-screen{background:#151820 !important;}
   body.desktop-active.os-solid-midnight .desktop-screen{background:#081326 !important;}
@@ -641,7 +627,7 @@
   body.desktop-active .planet-orb{display:block;}
   body:not(.desktop-active) .planet-orb{display:none;}
 
-  /* ---------- live orbital wallpapers ---------- */
+  
   .wallpaper-layer{
     position:fixed;
     inset:0;
@@ -692,7 +678,7 @@
     100%{transform:translate3d(-14vw,var(--y3),0) rotate(430deg);}
   }
 
-  /* Alternate wallpaper palettes */
+  
   body.wallpaper-nebula .wallpaper-layer{
     background:
       radial-gradient(circle at 20% 25%,rgba(167,139,250,.10),transparent 25%),
@@ -709,7 +695,7 @@
       radial-gradient(circle at 90% 10%,rgba(41,211,200,.05),transparent 25%);
   }
 
-  /* ---------- settings app ---------- */
+ 
   .settings-window{
     position:fixed;
     width:min(430px,calc(100vw - 28px));
@@ -830,7 +816,7 @@
     .wallpaper-preview{height:34px;}
   }
 
-  /* ---------- mini calendar + system status ---------- */
+ 
   .mini-calendar{
     margin-top:13px;
     padding-top:12px;
@@ -1135,7 +1121,7 @@
     .desktop-sat{ transition: none; }
   }
 
-  /* ---------- clean desktop mode: dial back visual noise ---------- */
+ 
   body.desktop-active .grid-overlay{ display: none; }
   body.desktop-active .stars{ display: none; }
   .desktop-screen{
@@ -1148,7 +1134,7 @@
     pointer-events: none;
   }
 
-  /* ---------- ambient background satellites + asteroids ---------- */
+  
   .ambient-obj{
     position: fixed;
     z-index: 1;
@@ -1180,7 +1166,7 @@
   .amb-ast-b{ width: 30px; height: 30px; top: 0; left: 0; animation: ambientDrift4 60s linear infinite; animation-delay: -30s; }
   .amb-ast-c{ width: 16px; height: 16px; top: 0; left: 0; animation: ambientDrift3 38s linear infinite; animation-delay: -22s; }
 
-  /* ---------- taskbar ---------- */
+  
   .desktop-taskbar{
     position: fixed; bottom: 18px; left: 50%;
     transform: translateX(-50%);
@@ -1217,7 +1203,7 @@
     box-shadow: 0 0 6px var(--aurora);
   }
 
-  /* ---------- OS window manager ---------- */
+  
   .browser-window,
   .calculator-window,
   .camera-window,
@@ -1286,7 +1272,7 @@
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
-  /* draggable window chrome */
+
   .browser-titlebar, .window-bar, .settings-titlebar{
     cursor: grab;
     user-select: none;
@@ -1372,7 +1358,7 @@
   }
   .browser-fallback a{ color: var(--signal); }
 
-  /* ---------- calculator ---------- */
+  
   .calc-display{
     padding: 18px 16px 10px;
     text-align: right;
@@ -1416,7 +1402,7 @@
   }
   .calc-btn.equals:hover{ background: #5bffb3; }
 
-  /* ---------- camera ---------- */
+  
   .camera-body{
     position: relative;
     flex: 1;
@@ -1727,7 +1713,7 @@
     
     <h1 id="el2">hey, i'm <span class="accent">Dxkshh</span> —<br>welcome to my orbit</h1>
 
-    <!-- [EDIT: BIO] -->
+   
     <p class="bio" id="el3">
       this is my little corner of the internet, built line by line.
       currently orbiting between code, playlists, and whatever
@@ -1735,7 +1721,7 @@
       see what you find.
     </p>
 
-    <!-- [EDIT: LINKS] — swap hrefs + labels for your own -->
+    
     <div class="links" id="el4">
       <a class="primary" href="#" id="enterOsBtn"><span class="dot">●</span> enter my os</a>
       <a href="https://github.com/" target="_blank">github <span class="dot">↗</span></a>
@@ -1745,7 +1731,7 @@
   <div class="hero-right">
     <div class="scan-ring"></div>
     <div class="sat-frame">
-      <!-- [EDIT: IMAGE] -->
+      
       <span class="sat-tag">SAT-01 // LIVE FEED</span>
       <span class="sat-tag right">SIGNAL: STRONG</span>
       <img src="./satellite.png" alt="satellite in orbit" />
@@ -1753,7 +1739,7 @@
   </div>
 </div>
 
-<!-- floating "window" — a mini app panel, per Part 2's window concept -->
+
 <div class="window">
   <div class="window-bar">
     <span class="window-dots"><span></span><span></span><span></span></span>
@@ -1768,13 +1754,13 @@
 </div>
 
 <div class="ticker-wrap">
-  <!-- [EDIT: TICKER] — add/remove facts, they repeat automatically -->
+  
   <div class="ticker" id="tickerContent"></div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // ---- boot sequence typing effect ----
+ 
   const bootMsg = "INITIALIZING STARDRIFTOS v1.0 ... LOADING DXKSHH.EXE ... DONE";
   const bootEl = document.getElementById('bootText');
   let i = 0;
@@ -1784,7 +1770,7 @@ document.addEventListener('DOMContentLoaded', function() {
       i++;
       setTimeout(typeBoot, 22);
     } else {
-      // reveal the rest of the hero once boot finishes
+      
       ['el1','el2','el3','el4'].forEach((id, idx) => {
         const node = document.getElementById(id);
         node.style.animationDelay = (idx * 0.12) + 's';
@@ -1794,7 +1780,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   typeBoot();
 
-  // ---- live clock, mission-control style ----
+  
   function updateClock(){
     const now = new Date();
     const hh = String(now.getHours()).padStart(2,'0');
@@ -1805,7 +1791,7 @@ document.addEventListener('DOMContentLoaded', function() {
   updateClock();
   setInterval(updateClock, 1000);
 
-  // ---- live wallpaper engine ----
+  
   const wallpaperLayer = document.getElementById('wallpaperLayer');
   const settingsAppBtn = document.getElementById('settingsAppBtn');
   const settingsWindow = document.getElementById('settingsWindow');
@@ -1826,7 +1812,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!wallpaperLayer) return;
     wallpaperLayer.innerHTML = '';
 
-    // Dense starfield: intentionally much richer after login.
+    
     for(let i=0;i<150;i++){
       const star = document.createElement('i');
       star.className = 'wallpaper-star';
@@ -1840,7 +1826,7 @@ document.addEventListener('DOMContentLoaded', function() {
       wallpaperLayer.appendChild(star);
     }
 
-    // Different satellites
+    
     for(let i=0;i<11;i++){
       const sat = document.createElement('div');
       sat.className = 'wall-satellite';
@@ -1855,7 +1841,7 @@ document.addEventListener('DOMContentLoaded', function() {
       wallpaperLayer.appendChild(sat);
     }
 
-    // Different asteroids
+    
     for(let i=0;i<20;i++){
       const asteroid = document.createElement('div');
       asteroid.className = 'wall-asteroid';
@@ -1870,7 +1856,7 @@ document.addEventListener('DOMContentLoaded', function() {
       wallpaperLayer.appendChild(asteroid);
     }
 
-    // Tiny drifting dust particles for the post-login space depth.
+    
     for(let i=0;i<55;i++){
       const dust = document.createElement('i');
       dust.className = 'space-dust';
@@ -1905,7 +1891,7 @@ document.addEventListener('DOMContentLoaded', function() {
   makeWallpaperObjects();
   let savedWallpaper = 'solid-void';
   try { savedWallpaper = localStorage.getItem('stardrift-wallpaper') || 'solid-void'; } catch(e){}
-  // Only apply a wallpaper that actually exists in the Settings UI.
+  
   const validWallpapers = new Set(
     [...document.querySelectorAll('.wallpaper-option')].map(btn => btn.dataset.wallpaper)
   );
@@ -1935,14 +1921,14 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', () => setWallpaper(btn.dataset.wallpaper));
   });
 
-  // ---- desktop app indicator ----
+ 
   const activeAppName = document.getElementById('activeAppName');
 
   function setActiveApp(name){
     if (activeAppName) activeAppName.textContent = name || 'DESKTOP';
   }
 
-  // Keep the indicator synchronized with the existing app windows.
+ 
   const appWatchList = [
     ['browserWindow','browserAppBtn','browser'],
     ['calculatorWindow','calculatorAppBtn','calculator'],
@@ -1961,14 +1947,14 @@ document.addEventListener('DOMContentLoaded', function() {
     setActiveApp(open ? open[2] : 'DESKTOP');
   }
 
-  // Observe class changes so drag/open/close behavior does not need to be rewritten.
+  
   appWatchList.forEach(([winId]) => {
     const el = document.getElementById(winId);
     if (el) new MutationObserver(syncActiveApp).observe(el, {attributes:true, attributeFilter:['class']});
   });
   syncActiveApp();
 
-  // ---- mini calendar ----
+ 
   function renderMiniCalendar(date = new Date()){
     const grid = document.getElementById('calendarGrid');
     const monthLabel = document.getElementById('calendarMonth');
@@ -1996,7 +1982,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderMiniCalendar();
   setInterval(() => renderMiniCalendar(new Date()), 60000);
 
-  // ---- floating orbital clock ----
+  
   function updateOrbitalClock(){
     const now = new Date();
     const hh = String(now.getHours()).padStart(2,'0');
@@ -2027,7 +2013,7 @@ document.addEventListener('DOMContentLoaded', function() {
   updateOrbitalClock();
   setInterval(updateOrbitalClock, 1000);
 
-  // ---- window uptime counter (how long you've been viewing the page) ----
+  
   let seconds = 0;
   function updateUptime(){
     seconds++;
@@ -2038,8 +2024,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   setInterval(updateUptime, 1000);
 
-  // ---- telemetry ticker content ----
-  // [EDIT: TICKER] edit these facts, they'll loop forever
+ 
   const facts = [
     "CURRENTLY LISTENING TO: your favorite artist",
     "STATUS: probably overthinking a color palette",
@@ -2049,10 +2034,10 @@ document.addEventListener('DOMContentLoaded', function() {
     "FUN FACT: this whole page is one html file"
   ];
   const tickerEl = document.getElementById('tickerContent');
-  const doubled = [...facts, ...facts]; // duplicate for seamless loop
+  const doubled = [...facts, ...facts]; 
   tickerEl.innerHTML = doubled.map(f => `<span><b>›</b> ${f}</span>`).join('');
 
-  // ================= ENTER MY OS: loading screen + desktop mode =================
+ 
   const enterOsBtn = document.getElementById('enterOsBtn');
   const loadingScreen = document.getElementById('loadingScreen');
   const loadingText = document.getElementById('loadingText');
@@ -2080,7 +2065,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const cameraFallback = document.getElementById('cameraFallback');
   const captureBtn = document.getElementById('captureBtn');
   const retakeBtn = document.getElementById('retakeBtn');
-  // gallery app
+  
   const galleryWindow = document.getElementById('galleryWindow');
   const galleryAppBtn = document.getElementById('galleryAppBtn');
   const galleryClose = document.getElementById('galleryClose');
@@ -2090,21 +2075,21 @@ document.addEventListener('DOMContentLoaded', function() {
   const galleryViewTitle = document.getElementById('galleryViewTitle');
   const galleryViewDesc = document.getElementById('galleryViewDesc');
   const galleryBackBtn = document.getElementById('galleryBackBtn');
-  // notes app
+  
   const notesWindow = document.getElementById('notesWindow');
   const notesAppBtn = document.getElementById('notesAppBtn');
   const notesClose = document.getElementById('notesClose');
   const notesArea = document.getElementById('notesArea');
   const notesSaved = document.getElementById('notesSaved');
   const notesWords = document.getElementById('notesWords');
-  // terminal app
+  
   const terminalWindow = document.getElementById('terminalWindow');
   const terminalAppBtn = document.getElementById('terminalAppBtn');
   const terminalClose = document.getElementById('terminalClose');
   const terminalBody = document.getElementById('terminalBody');
   const termOutput = document.getElementById('termOutput');
   const termInput = document.getElementById('termInput');
-  // snake game
+ 
   const gameWindow = document.getElementById('gameWindow');
   const gameAppBtn = document.getElementById('gameAppBtn');
   const gameClose = document.getElementById('gameClose');
@@ -2128,7 +2113,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadingPct.textContent = '0%';
 
     const loadInterval = setInterval(() => {
-      progress += 2; // fixed step: 50 ticks x 100ms = 5000ms total
+      progress += 2; 
       if (progress >= 100) progress = 100;
 
       loadingBarFill.style.width = progress + '%';
@@ -2155,7 +2140,7 @@ document.addEventListener('DOMContentLoaded', function() {
     closeAllApps();
   });
 
-  // ---- satellite follows the cursor with smooth trailing lag ----
+  
   let followInit = false;
   function initDesktopSatellite(){
     let mouseX = window.innerWidth / 2;
@@ -2169,7 +2154,7 @@ document.addEventListener('DOMContentLoaded', function() {
       mouseY = e.clientY;
     });
 
-    // touch support: satellite drifts toward last touch point
+    
     document.addEventListener('touchmove', (e) => {
       if (e.touches[0]) {
         mouseX = e.touches[0].clientX;
@@ -2188,7 +2173,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (!followInit) { animate(); followInit = true; }
 
-    // ---- click the satellite: it gets blasted ----
+   
     desktopSat.onclick = () => {
       if (!alive) return;
       alive = false;
@@ -2201,7 +2186,7 @@ document.addEventListener('DOMContentLoaded', function() {
       desktopSat.classList.add('hidden');
 
       setTimeout(() => {
-        // respawn at a fresh spot
+       
         satX = Math.random() * window.innerWidth;
         satY = Math.random() * window.innerHeight;
         desktopSat.classList.remove('hidden');
@@ -2210,7 +2195,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
-  // ---- browser app: opens/closes the wikipedia window ----
+  
   browserAppBtn.addEventListener('click', () => {
     if (browserWindow.classList.contains('minimized')) {
       restoreWindow(browserWindow);
@@ -2233,7 +2218,7 @@ document.addEventListener('DOMContentLoaded', function() {
     browserAppBtn.classList.remove('active-app');
   });
 
-  // if wikipedia's iframe fails to load (blocked, offline, etc), show a fallback link
+  
   let iframeLoaded = false;
   wikiFrame.addEventListener('load', () => { iframeLoaded = true; });
   setTimeout(() => {
@@ -2242,7 +2227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, 4000);
 
-  // ---- closes every app window + taskbar highlight (used when leaving desktop) ----
+  
   function closeAllApps(){
     browserWindow.classList.remove('active');
     browserAppBtn.classList.remove('active-app');
@@ -2260,9 +2245,7 @@ document.addEventListener('DOMContentLoaded', function() {
     pauseSnake();
   }
 
-  // ================= OS WINDOW MANAGER =================
-  // All desktop apps are real floating windows: drag, focus, minimize,
-  // maximize/restore and close. Positions are clamped to the viewport.
+ 
   let topWindowZ = 100;
 
   function focusWindow(win){
@@ -2325,7 +2308,7 @@ document.addEventListener('DOMContentLoaded', function() {
       transform: win.style.transform || 'none'
     };
 
-    // Convert a centered window to viewport coordinates before maximizing.
+    
     win.style.left = rect.left + 'px';
     win.style.top = rect.top + 'px';
     win.style.right = 'auto';
@@ -2355,7 +2338,7 @@ document.addEventListener('DOMContentLoaded', function() {
       focusWindow(win);
       const rect = win.getBoundingClientRect();
 
-      // Freeze the current visual position so dragging never jumps.
+      
       win.style.left = rect.left + 'px';
       win.style.top = rect.top + 'px';
       win.style.right = 'auto';
@@ -2406,7 +2389,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Clicking the title bar focuses the window without dragging.
+    
     handle.addEventListener('click', () => focusWindow(win));
   }
 
@@ -2420,7 +2403,7 @@ document.addEventListener('DOMContentLoaded', function() {
   makeWindowFloatable(settingsWindow, document.querySelector('#settingsWindow .settings-titlebar'), settingsAppBtn);
   makeWindowFloatable(document.querySelector('.window'), document.querySelector('.window .window-bar'));
 
-  // ================= CALCULATOR APP =================
+  
   calculatorAppBtn.addEventListener('click', () => {
     if (calculatorWindow.classList.contains('minimized')) {
       restoreWindow(calculatorWindow);
@@ -2458,7 +2441,7 @@ document.addEventListener('DOMContentLoaded', function() {
       calcExpr = calcExpr.slice(0, -1);
     } else if (val === '=') {
       try {
-        // only allow digits, operators, decimal points, and % — no free-form code
+       
         if (!/^[0-9+\-*/.% ]+$/.test(calcExpr)) throw new Error('invalid');
         const safeExpr = calcExpr.replace(/%/g, '/100');
         const result = Function('"use strict"; return (' + safeExpr + ')')();
@@ -2474,7 +2457,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   calcRender();
 
-  // Keyboard support for the calculator when the OS is focused.
+
   document.addEventListener('keydown', (e) => {
     if (!calculatorWindow.classList.contains('active')) return;
     const allowed = '0123456789+-*/.%';
@@ -2484,7 +2467,7 @@ document.addEventListener('DOMContentLoaded', function() {
       calcRender();
       e.preventDefault();
     } else if (e.key === 'Enter' || e.key === '=') {
-      // Reuse the same calculation path as the on-screen equals button.
+      
       try {
         if (!/^[0-9+\-*/.% ]+$/.test(calcExpr)) throw new Error('invalid');
         const safeExpr = calcExpr.replace(/%/g, '/100');
@@ -2504,7 +2487,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // ================= CAMERA APP =================
+  
   let cameraStream = null;
 
   function openCamera(){
@@ -2515,8 +2498,7 @@ document.addEventListener('DOMContentLoaded', function() {
     cameraSnapshot.style.display = 'none';
     cameraVideo.style.display = 'block';
 
-    if (cameraStream) return; // already running
-
+    if (cameraStream) return; 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       cameraFallback.style.display = 'flex';
       return;
@@ -2574,8 +2556,7 @@ document.addEventListener('DOMContentLoaded', function() {
     retakeBtn.style.display = 'none';
   });
 
-  // ================= GALLERY APP (hubble.exe) =================
-  // Shared open/minimize/close behavior for the simple apps.
+  
   function toggleAppWindow(win, btn){
     if (win.classList.contains('minimized')) {
       restoreWindow(win);
@@ -2594,7 +2575,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return true;
   }
 
-  // [EDIT: GALLERY] add/remove photos here — they live in ./hubble/
+  
   const HUBBLE_PHOTOS = [
     { src:'./hubble/M3.jpg',            title:'MESSIER 3',   desc:'Globular cluster · Canes Venatici' },
     { src:'./hubble/NGC6723.jpg',       title:'NGC 6723',    desc:'Globular cluster · Sagitta' },
@@ -2626,7 +2607,7 @@ document.addEventListener('DOMContentLoaded', function() {
   galleryAppBtn.addEventListener('click', () => toggleAppWindow(galleryWindow, galleryAppBtn));
   galleryClose.addEventListener('click', () => closeWindow(galleryWindow, galleryAppBtn));
 
-  // ================= NOTES APP (notes.exe) =================
+  
   const NOTES_KEY = 'stardrift-notes';
   try { notesArea.value = localStorage.getItem(NOTES_KEY) || ''; } catch (err) {}
 
@@ -2650,7 +2631,7 @@ document.addEventListener('DOMContentLoaded', function() {
   notesClose.addEventListener('click', () => closeWindow(notesWindow, notesAppBtn));
   updateNotesStatus(true);
 
-  // ================= TERMINAL APP (terminal.exe) =================
+  
   termOutput.innerHTML =
     '<div>StarDriftOS drift-sh v1.0</div>' +
     '<div class="dim">type <span class="cmd">help</span> to see what this thing can do.</div>';
@@ -2840,7 +2821,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   terminalClose.addEventListener('click', () => closeWindow(terminalWindow, terminalAppBtn));
 
-  // ================= SNAKE GAME (snake.exe) =================
+  
   const SNAKE_CELL = 15;
   const SNAKE_COLS = 20;
   const SNAKE_ROWS = 20;
@@ -2874,7 +2855,7 @@ document.addEventListener('DOMContentLoaded', function() {
     snakeCtx.fillStyle = '#04070f';
     snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
 
-    // faint grid
+  
     snakeCtx.strokeStyle = 'rgba(232,236,244,0.04)';
     snakeCtx.lineWidth = 1;
     for (let i = 1; i < SNAKE_COLS; i++) {
@@ -3107,10 +3088,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(boom);
     setTimeout(() => boom.remove(), 950);
   }
-}); // end DOMContentLoaded
+}); 
 </script>
 
-<!-- loading screen, shown when "enter my os" is clicked -->
+
 <div class="loading-screen" id="loadingScreen">
   <svg class="loading-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="6" y="26" width="14" height="7" rx="1" transform="rotate(-40 6 26)" fill="#3dffa2" opacity="0.85"/>
@@ -3126,7 +3107,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="loading-pct" id="loadingPct">0%</div>
 </div>
 
-<!-- desktop mode, revealed after loading finishes -->
+
 
 <div class="wallpaper-layer" id="wallpaperLayer">
   <div class="planet-orb" style="width:150px;height:150px;right:8%;top:18%;background:radial-gradient(circle at 35% 30%,rgba(41,211,200,.55),rgba(7,20,35,.92) 68%);--planet-duration:78s;"></div>
@@ -3134,7 +3115,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <div class="desktop-screen" id="desktopScreen">
-  <!-- ambient background objects: purely decorative, non-interactive -->
+
   <div class="ambient-obj amb-sat-a">
     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="6" y="26" width="14" height="7" rx="1" transform="rotate(-40 6 26)" fill="#3dffa2"/>
@@ -3229,7 +3210,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </svg>
   </div>
 
-  <!-- browser app window (wikipedia) -->
+
   <div class="browser-window os-window" id="browserWindow">
     <div class="browser-titlebar">
       <div class="window-controls">
@@ -3250,7 +3231,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- calculator app window -->
+  
   <div class="calculator-window os-window" id="calculatorWindow">
     <div class="browser-titlebar">
       <div class="window-controls">
@@ -3288,7 +3269,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- camera app window -->
+
   <div class="camera-window os-window" id="cameraWindow">
     <div class="browser-titlebar">
       <div class="window-controls">
@@ -3312,7 +3293,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- gallery app window (hubble photo viewer) -->
+
   <div class="gallery-window os-window" id="galleryWindow">
     <div class="browser-titlebar">
       <div class="window-controls">
@@ -3337,7 +3318,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- notes app window -->
+ 
   <div class="notes-window os-window" id="notesWindow">
     <div class="browser-titlebar">
       <div class="window-controls">
@@ -3356,7 +3337,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- terminal app window -->
+
   <div class="terminal-window os-window" id="terminalWindow">
     <div class="browser-titlebar">
       <div class="window-controls">
@@ -3375,7 +3356,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- snake game window -->
+
   <div class="game-window os-window" id="gameWindow">
     <div class="browser-titlebar">
       <div class="window-controls">
@@ -3396,7 +3377,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- taskbar -->
+  
 
   <div class="settings-window os-window" id="settingsWindow">
     <div class="settings-titlebar">
